@@ -27,4 +27,3 @@ Unfortunately, the whole process requires a windows computer but once it is set 
 
 Copy the capsense example folder to your machine. If on a virtual machine, *do not* place it in a folder that is shared with the host as this seem to cause trouble when compiling.
 
-      C:\Users\lfsaw\Documents\jeffsStuff\jeffsStuff\USB-UART
