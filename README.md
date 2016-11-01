@@ -1,5 +1,5 @@
 # Capacitive sensing with Cypress PSoC-4
-*2015/2016 Jeff Snyder, Till Bovermann*
+*2015/2016 [Jeff Snyder](http://snyderphonics.com/), [Till Bovermann](http://tai-studio.org)*
 
 This is a notepad on what is needed to use a [Cypress PSoC 4 CY8CKIT-049 Prototyping Kit](http://www.cypress.com/?rid=92146) as a capacitive sensing element that forwards the measured data via a serial connection. The board used is build around a [PSoC 4 chip](http://www.cypress.com/psoc4/), which is a cheap and powerful programmable microcontroller with integrated re-programmable analogue cirquitry, developed especially for capacitive sensing demands.
 
