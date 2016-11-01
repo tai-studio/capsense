@@ -1,0 +1,801 @@
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccrkoeGt.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"main.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.comm	capValue,8,4
+  18              		.comm	k,4,4
+  19              		.comm	buffer,64,4
+  20              		.section	.rodata
+  21              		.align	2
+  22              	.LC3:
+  23 0000 25752025 		.ascii	"%u %u %u %u\000"
+  23      75202575 
+  23      20257500 
+  24              		.section	.text.main,"ax",%progbits
+  25              		.align	2
+  26              		.global	main
+  27              		.code	16
+  28              		.thumb_func
+  29              		.type	main, %function
+  30              	main:
+  31              	.LFB33:
+  32              		.file 1 ".\\main.c"
+   1:.\main.c      **** /******************************************************************************
+   2:.\main.c      **** * Project Name		: USB-UART
+   3:.\main.c      **** * File Name			: main.c
+   4:.\main.c      **** * Version 			: 1.0
+   5:.\main.c      **** * Device Used		: CY8C4245AXI-483
+   6:.\main.c      **** * Software Used		: PSoC Creator 2.2 SP1
+   7:.\main.c      **** * Compiler    		: ARMGCC 4.4.1
+   8:.\main.c      **** * Related Hardware	: CY8CKIT-042 PSoC 4 Pioneer Kit 
+   9:.\main.c      **** *
+  10:.\main.c      **** ******************************************************************************
+  11:.\main.c      **** * ========================================
+  12:.\main.c      **** *
+  13:.\main.c      **** The following firmware was developed by Cypress Semiconductor
+  14:.\main.c      **** This work is licensed under a Creative Commons Attribution 3.0 Unported License.
+  15:.\main.c      **** http://creativecommons.org/licenses/by/3.0/deed.en_US
+  16:.\main.c      **** You are free to:
+  17:.\main.c      **** -To Share — to copy, distribute and transmit the work 
+  18:.\main.c      **** -To Remix — to adapt the work 
+  19:.\main.c      **** -To make commercial use of the work
+  20:.\main.c      **** * ========================================
+  21:.\main.c      **** *
+  22:.\main.c      **** ******************************************************************************
+  23:.\main.c      **** *                           THEORY OF OPERATION
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccrkoeGt.s 			page 2
+
+
+  24:.\main.c      **** * This project demonstrates UART communication over the kit USB-UART Bridge. 
+  25:.\main.c      **** * The project uses the SCB based UART component which sends the string
+  26:.\main.c      **** * "CY8CKIT-042 USB-UART" and loops back the data sent over the COM terminal software.
+  27:.\main.c      **** * 
+  28:.\main.c      **** * UART is configured with
+  29:.\main.c      **** * UART Basic
+  30:.\main.c      **** * 	Mode: Standard
+  31:.\main.c      **** * 	Direction: TX+RX
+  32:.\main.c      **** * 	Baud rate (kbps): 9600
+  33:.\main.c      **** * 	Data bits: 8 bits
+  34:.\main.c      **** * 	Parity: None
+  35:.\main.c      **** * 	Stop bits: 1 bit
+  36:.\main.c      **** * 	Physical connections needed:
+  37:.\main.c      **** * 	Jumper between P0[5] and PSoC 5LP Header J8 P12[6]
+  38:.\main.c      **** * UART Advanced
+  39:.\main.c      **** * 	RX buffer size: 8
+  40:.\main.c      **** * 	TX buffer size: 8
+  41:.\main.c      **** * 	Interrupt: None
+  42:.\main.c      **** *
+  43:.\main.c      **** * Physical Connetion
+  44:.\main.c      **** * Connect jumper wire from the UART RX (P0[4]) of PSoC 4 to J8_10 (P12[7]) of PSoC 5LP
+  45:.\main.c      **** * Connect jumper wire from the UART TX (P0[5]) of PSoC 4 to J8_9 (P12[6]) of PSoC 5LP
+  46:.\main.c      **** * ******************************************************************************/ 
+  47:.\main.c      **** #include <device.h>
+  48:.\main.c      **** #include <stdlib.h>
+  49:.\main.c      **** 
+  50:.\main.c      **** #define numSense 4
+  51:.\main.c      **** 
+  52:.\main.c      **** uint16 capValue[numSense];
+  53:.\main.c      **** int k;
+  54:.\main.c      **** char buffer[64];
+  55:.\main.c      **** 
+  56:.\main.c      **** void main()
+  57:.\main.c      **** {   
+  33              		.loc 1 57 0
+  34              		.cfi_startproc
+  35 0000 B0B5     		push	{r4, r5, r7, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 16
+  38              		.cfi_offset 4, -16
+  39              		.cfi_offset 5, -12
+  40              		.cfi_offset 7, -8
+  41              		.cfi_offset 14, -4
+  42 0002 82B0     		sub	sp, sp, #8
+  43              	.LCFI1:
+  44              		.cfi_def_cfa_offset 24
+  45 0004 02AF     		add	r7, sp, #8
+  46              	.LCFI2:
+  47              		.cfi_def_cfa 7, 16
+  58:.\main.c      ****     uint8 ch;
+  59:.\main.c      **** 
+  60:.\main.c      ****     /* Start SCB UART TX+RX operation */    
+  61:.\main.c      ****     UART_Start(); 
+  48              		.loc 1 61 0
+  49 0006 FFF7FEFF 		bl	UART_Start
+  62:.\main.c      ****     CyGlobalIntEnable;
+  50              		.loc 1 62 0
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccrkoeGt.s 			page 3
+
+
+  51              	@ 62 ".\main.c" 1
+  52 000a 62B6     		CPSIE   i
+  53              	@ 0 "" 2
+  63:.\main.c      ****     CapSense_Start();
+  54              		.loc 1 63 0
+  55              		.code	16
+  56 000c FFF7FEFF 		bl	CapSense_Start
+  57              	.L5:
+  58              	.LBB2:
+  64:.\main.c      ****    // CapSense_TunerStart();
+  65:.\main.c      ****     // go into TunerComm 
+  66:.\main.c      ****     /*for(;;){
+  67:.\main.c      **** CapSense_TunerComm();
+  68:.\main.c      ****     };
+  69:.\main.c      ****     */
+  70:.\main.c      ****     // return our values from SensePins via buffer
+  71:.\main.c      ****     for(;;)
+  72:.\main.c      ****     {
+  73:.\main.c      ****         CapSense_ScanEnabledWidgets();
+  59              		.loc 1 73 0
+  60 0010 FFF7FEFF 		bl	CapSense_ScanEnabledWidgets
+  74:.\main.c      ****             while(CapSense_IsBusy() != 0);
+  61              		.loc 1 74 0
+  62 0014 C046     		mov	r8, r8
+  63              	.L2:
+  64              		.loc 1 74 0 is_stmt 0 discriminator 1
+  65 0016 FFF7FEFF 		bl	CapSense_IsBusy
+  66 001a 031C     		mov	r3, r0
+  67 001c 002B     		cmp	r3, #0
+  68 001e FAD1     		bne	.L2
+  75:.\main.c      ****         
+  76:.\main.c      ****             for(k=0; k < numSense; k++){
+  69              		.loc 1 76 0 is_stmt 1
+  70 0020 184B     		ldr	r3, .L6
+  71 0022 0022     		mov	r2, #0
+  72 0024 1A60     		str	r2, [r3]
+  73 0026 10E0     		b	.L3
+  74              	.L4:
+  77:.\main.c      ****             capValue[k] = CapSense_ReadSensorRaw(k);
+  75              		.loc 1 77 0 discriminator 2
+  76 0028 164B     		ldr	r3, .L6
+  77 002a 1C68     		ldr	r4, [r3]
+  78 002c 154B     		ldr	r3, .L6
+  79 002e 1B68     		ldr	r3, [r3]
+  80 0030 181C     		mov	r0, r3
+  81 0032 FFF7FEFF 		bl	CapSense_ReadSensorRaw
+  82 0036 031C     		mov	r3, r0
+  83 0038 191C     		mov	r1, r3
+  84 003a 134B     		ldr	r3, .L6+4
+  85 003c 6200     		lsl	r2, r4, #1
+  86 003e D152     		strh	r1, [r2, r3]
+  76:.\main.c      ****             for(k=0; k < numSense; k++){
+  87              		.loc 1 76 0 discriminator 2
+  88 0040 104B     		ldr	r3, .L6
+  89 0042 1B68     		ldr	r3, [r3]
+  90 0044 5A1C     		add	r2, r3, #1
+  91 0046 0F4B     		ldr	r3, .L6
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccrkoeGt.s 			page 4
+
+
+  92 0048 1A60     		str	r2, [r3]
+  93              	.L3:
+  76:.\main.c      ****             for(k=0; k < numSense; k++){
+  94              		.loc 1 76 0 is_stmt 0 discriminator 1
+  95 004a 0E4B     		ldr	r3, .L6
+  96 004c 1B68     		ldr	r3, [r3]
+  97 004e 032B     		cmp	r3, #3
+  98 0050 EADD     		ble	.L4
+  78:.\main.c      ****         };
+  79:.\main.c      **** 
+  80:.\main.c      ****         sprintf(buffer, "%u %u %u %u", capValue[0], capValue[1], capValue[2], capValue[3]);
+  99              		.loc 1 80 0 is_stmt 1
+ 100 0052 0D4B     		ldr	r3, .L6+4
+ 101 0054 1B88     		ldrh	r3, [r3]
+ 102 0056 1A1C     		mov	r2, r3
+ 103 0058 0B4B     		ldr	r3, .L6+4
+ 104 005a 5B88     		ldrh	r3, [r3, #2]
+ 105 005c 0A49     		ldr	r1, .L6+4
+ 106 005e 8988     		ldrh	r1, [r1, #4]
+ 107 0060 0D1C     		mov	r5, r1
+ 108 0062 0949     		ldr	r1, .L6+4
+ 109 0064 C988     		ldrh	r1, [r1, #6]
+ 110 0066 0C1C     		mov	r4, r1
+ 111 0068 0848     		ldr	r0, .L6+8
+ 112 006a 0949     		ldr	r1, .L6+12
+ 113 006c 0095     		str	r5, [sp]
+ 114 006e 0194     		str	r4, [sp, #4]
+ 115 0070 FFF7FEFF 		bl	sprintf
+  81:.\main.c      ****         
+  82:.\main.c      ****         // return values
+  83:.\main.c      ****         UART_UartPutString(buffer);
+ 116              		.loc 1 83 0
+ 117 0074 054B     		ldr	r3, .L6+8
+ 118 0076 181C     		mov	r0, r3
+ 119 0078 FFF7FEFF 		bl	UART_UartPutString
+  84:.\main.c      ****         UART_UartPutChar(10);
+ 120              		.loc 1 84 0
+ 121 007c 0A20     		mov	r0, #10
+ 122 007e FFF7FEFF 		bl	UART_SpiUartWriteTxData
+ 123              	.LBE2:
+  85:.\main.c      ****    
+  86:.\main.c      ****     }
+ 124              		.loc 1 86 0
+ 125 0082 C5E7     		b	.L5
+ 126              	.L7:
+ 127              		.align	2
+ 128              	.L6:
+ 129 0084 00000000 		.word	k
+ 130 0088 00000000 		.word	capValue
+ 131 008c 00000000 		.word	buffer
+ 132 0090 00000000 		.word	.LC3
+ 133              		.cfi_endproc
+ 134              	.LFE33:
+ 135              		.size	main, .-main
+ 136              		.text
+ 137              	.Letext0:
+ 138              		.file 2 "./Generated_Source/PSoC4/cytypes.h"
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccrkoeGt.s 			page 5
+
+
+ 139              		.file 3 "<built-in>"
+ 140              		.section	.debug_info,"",%progbits
+ 141              	.Ldebug_info0:
+ 142 0000 56010000 		.4byte	0x156
+ 143 0004 0200     		.2byte	0x2
+ 144 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 145 000a 04       		.byte	0x4
+ 146 000b 01       		.uleb128 0x1
+ 147 000c 2F000000 		.4byte	.LASF18
+ 148 0010 01       		.byte	0x1
+ 149 0011 41010000 		.4byte	.LASF19
+ 150 0015 90000000 		.4byte	.LASF20
+ 151 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 152 001d 00000000 		.4byte	0
+ 153 0021 00000000 		.4byte	0
+ 154 0025 00000000 		.4byte	.Ldebug_line0
+ 155 0029 02       		.uleb128 0x2
+ 156 002a 01       		.byte	0x1
+ 157 002b 06       		.byte	0x6
+ 158 002c 2F010000 		.4byte	.LASF0
+ 159 0030 02       		.uleb128 0x2
+ 160 0031 01       		.byte	0x1
+ 161 0032 08       		.byte	0x8
+ 162 0033 E6000000 		.4byte	.LASF1
+ 163 0037 02       		.uleb128 0x2
+ 164 0038 02       		.byte	0x2
+ 165 0039 05       		.byte	0x5
+ 166 003a 02010000 		.4byte	.LASF2
+ 167 003e 02       		.uleb128 0x2
+ 168 003f 02       		.byte	0x2
+ 169 0040 07       		.byte	0x7
+ 170 0041 1C010000 		.4byte	.LASF3
+ 171 0045 02       		.uleb128 0x2
+ 172 0046 04       		.byte	0x4
+ 173 0047 05       		.byte	0x5
+ 174 0048 F9000000 		.4byte	.LASF4
+ 175 004c 02       		.uleb128 0x2
+ 176 004d 04       		.byte	0x4
+ 177 004e 07       		.byte	0x7
+ 178 004f 7E000000 		.4byte	.LASF5
+ 179 0053 02       		.uleb128 0x2
+ 180 0054 08       		.byte	0x8
+ 181 0055 05       		.byte	0x5
+ 182 0056 00000000 		.4byte	.LASF6
+ 183 005a 02       		.uleb128 0x2
+ 184 005b 08       		.byte	0x8
+ 185 005c 07       		.byte	0x7
+ 186 005d CF000000 		.4byte	.LASF7
+ 187 0061 03       		.uleb128 0x3
+ 188 0062 04       		.byte	0x4
+ 189 0063 05       		.byte	0x5
+ 190 0064 696E7400 		.ascii	"int\000"
+ 191 0068 02       		.uleb128 0x2
+ 192 0069 04       		.byte	0x4
+ 193 006a 07       		.byte	0x7
+ 194 006b 15000000 		.4byte	.LASF8
+ 195 006f 04       		.uleb128 0x4
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccrkoeGt.s 			page 6
+
+
+ 196 0070 78000000 		.4byte	.LASF9
+ 197 0074 02       		.byte	0x2
+ 198 0075 5B       		.byte	0x5b
+ 199 0076 30000000 		.4byte	0x30
+ 200 007a 04       		.uleb128 0x4
+ 201 007b 4A010000 		.4byte	.LASF10
+ 202 007f 02       		.byte	0x2
+ 203 0080 5C       		.byte	0x5c
+ 204 0081 3E000000 		.4byte	0x3e
+ 205 0085 04       		.uleb128 0x4
+ 206 0086 0E000000 		.4byte	.LASF11
+ 207 008a 02       		.byte	0x2
+ 208 008b 5D       		.byte	0x5d
+ 209 008c 4C000000 		.4byte	0x4c
+ 210 0090 02       		.uleb128 0x2
+ 211 0091 04       		.byte	0x4
+ 212 0092 04       		.byte	0x4
+ 213 0093 3B010000 		.4byte	.LASF12
+ 214 0097 02       		.uleb128 0x2
+ 215 0098 08       		.byte	0x8
+ 216 0099 04       		.byte	0x4
+ 217 009a 15010000 		.4byte	.LASF13
+ 218 009e 02       		.uleb128 0x2
+ 219 009f 01       		.byte	0x1
+ 220 00a0 08       		.byte	0x8
+ 221 00a1 F4000000 		.4byte	.LASF14
+ 222 00a5 02       		.uleb128 0x2
+ 223 00a6 04       		.byte	0x4
+ 224 00a7 07       		.byte	0x7
+ 225 00a8 58010000 		.4byte	.LASF15
+ 226 00ac 05       		.uleb128 0x5
+ 227 00ad 04       		.byte	0x4
+ 228 00ae 9E000000 		.4byte	0x9e
+ 229 00b2 05       		.uleb128 0x5
+ 230 00b3 04       		.byte	0x4
+ 231 00b4 B8000000 		.4byte	0xb8
+ 232 00b8 06       		.uleb128 0x6
+ 233 00b9 9E000000 		.4byte	0x9e
+ 234 00bd 07       		.uleb128 0x7
+ 235 00be 7A000000 		.4byte	0x7a
+ 236 00c2 CD000000 		.4byte	0xcd
+ 237 00c6 08       		.uleb128 0x8
+ 238 00c7 A5000000 		.4byte	0xa5
+ 239 00cb 03       		.byte	0x3
+ 240 00cc 00       		.byte	0
+ 241 00cd 09       		.uleb128 0x9
+ 242 00ce 01       		.byte	0x1
+ 243 00cf 22000000 		.4byte	.LASF21
+ 244 00d3 01       		.byte	0x1
+ 245 00d4 38       		.byte	0x38
+ 246 00d5 00000000 		.4byte	.LFB33
+ 247 00d9 94000000 		.4byte	.LFE33
+ 248 00dd 00000000 		.4byte	.LLST0
+ 249 00e1 01       		.byte	0x1
+ 250 00e2 15010000 		.4byte	0x115
+ 251 00e6 0A       		.uleb128 0xa
+ 252 00e7 636800   		.ascii	"ch\000"
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccrkoeGt.s 			page 7
+
+
+ 253 00ea 01       		.byte	0x1
+ 254 00eb 3A       		.byte	0x3a
+ 255 00ec 6F000000 		.4byte	0x6f
+ 256 00f0 0B       		.uleb128 0xb
+ 257 00f1 10000000 		.4byte	.LBB2
+ 258 00f5 82000000 		.4byte	.LBE2
+ 259 00f9 0C       		.uleb128 0xc
+ 260 00fa 01       		.byte	0x1
+ 261 00fb 27000000 		.4byte	.LASF22
+ 262 00ff 03       		.byte	0x3
+ 263 0100 00       		.byte	0
+ 264 0101 01       		.byte	0x1
+ 265 0102 61000000 		.4byte	0x61
+ 266 0106 01       		.byte	0x1
+ 267 0107 0D       		.uleb128 0xd
+ 268 0108 AC000000 		.4byte	0xac
+ 269 010c 0D       		.uleb128 0xd
+ 270 010d B2000000 		.4byte	0xb2
+ 271 0111 0E       		.uleb128 0xe
+ 272 0112 00       		.byte	0
+ 273 0113 00       		.byte	0
+ 274 0114 00       		.byte	0
+ 275 0115 0F       		.uleb128 0xf
+ 276 0116 0C010000 		.4byte	.LASF16
+ 277 011a 01       		.byte	0x1
+ 278 011b 34       		.byte	0x34
+ 279 011c BD000000 		.4byte	0xbd
+ 280 0120 01       		.byte	0x1
+ 281 0121 05       		.byte	0x5
+ 282 0122 03       		.byte	0x3
+ 283 0123 00000000 		.4byte	capValue
+ 284 0127 10       		.uleb128 0x10
+ 285 0128 6B00     		.ascii	"k\000"
+ 286 012a 01       		.byte	0x1
+ 287 012b 35       		.byte	0x35
+ 288 012c 61000000 		.4byte	0x61
+ 289 0130 01       		.byte	0x1
+ 290 0131 05       		.byte	0x5
+ 291 0132 03       		.byte	0x3
+ 292 0133 00000000 		.4byte	k
+ 293 0137 07       		.uleb128 0x7
+ 294 0138 9E000000 		.4byte	0x9e
+ 295 013c 47010000 		.4byte	0x147
+ 296 0140 08       		.uleb128 0x8
+ 297 0141 A5000000 		.4byte	0xa5
+ 298 0145 3F       		.byte	0x3f
+ 299 0146 00       		.byte	0
+ 300 0147 0F       		.uleb128 0xf
+ 301 0148 51010000 		.4byte	.LASF17
+ 302 014c 01       		.byte	0x1
+ 303 014d 36       		.byte	0x36
+ 304 014e 37010000 		.4byte	0x137
+ 305 0152 01       		.byte	0x1
+ 306 0153 05       		.byte	0x5
+ 307 0154 03       		.byte	0x3
+ 308 0155 00000000 		.4byte	buffer
+ 309 0159 00       		.byte	0
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccrkoeGt.s 			page 8
+
+
+ 310              		.section	.debug_abbrev,"",%progbits
+ 311              	.Ldebug_abbrev0:
+ 312 0000 01       		.uleb128 0x1
+ 313 0001 11       		.uleb128 0x11
+ 314 0002 01       		.byte	0x1
+ 315 0003 25       		.uleb128 0x25
+ 316 0004 0E       		.uleb128 0xe
+ 317 0005 13       		.uleb128 0x13
+ 318 0006 0B       		.uleb128 0xb
+ 319 0007 03       		.uleb128 0x3
+ 320 0008 0E       		.uleb128 0xe
+ 321 0009 1B       		.uleb128 0x1b
+ 322 000a 0E       		.uleb128 0xe
+ 323 000b 55       		.uleb128 0x55
+ 324 000c 06       		.uleb128 0x6
+ 325 000d 11       		.uleb128 0x11
+ 326 000e 01       		.uleb128 0x1
+ 327 000f 52       		.uleb128 0x52
+ 328 0010 01       		.uleb128 0x1
+ 329 0011 10       		.uleb128 0x10
+ 330 0012 06       		.uleb128 0x6
+ 331 0013 00       		.byte	0
+ 332 0014 00       		.byte	0
+ 333 0015 02       		.uleb128 0x2
+ 334 0016 24       		.uleb128 0x24
+ 335 0017 00       		.byte	0
+ 336 0018 0B       		.uleb128 0xb
+ 337 0019 0B       		.uleb128 0xb
+ 338 001a 3E       		.uleb128 0x3e
+ 339 001b 0B       		.uleb128 0xb
+ 340 001c 03       		.uleb128 0x3
+ 341 001d 0E       		.uleb128 0xe
+ 342 001e 00       		.byte	0
+ 343 001f 00       		.byte	0
+ 344 0020 03       		.uleb128 0x3
+ 345 0021 24       		.uleb128 0x24
+ 346 0022 00       		.byte	0
+ 347 0023 0B       		.uleb128 0xb
+ 348 0024 0B       		.uleb128 0xb
+ 349 0025 3E       		.uleb128 0x3e
+ 350 0026 0B       		.uleb128 0xb
+ 351 0027 03       		.uleb128 0x3
+ 352 0028 08       		.uleb128 0x8
+ 353 0029 00       		.byte	0
+ 354 002a 00       		.byte	0
+ 355 002b 04       		.uleb128 0x4
+ 356 002c 16       		.uleb128 0x16
+ 357 002d 00       		.byte	0
+ 358 002e 03       		.uleb128 0x3
+ 359 002f 0E       		.uleb128 0xe
+ 360 0030 3A       		.uleb128 0x3a
+ 361 0031 0B       		.uleb128 0xb
+ 362 0032 3B       		.uleb128 0x3b
+ 363 0033 0B       		.uleb128 0xb
+ 364 0034 49       		.uleb128 0x49
+ 365 0035 13       		.uleb128 0x13
+ 366 0036 00       		.byte	0
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccrkoeGt.s 			page 9
+
+
+ 367 0037 00       		.byte	0
+ 368 0038 05       		.uleb128 0x5
+ 369 0039 0F       		.uleb128 0xf
+ 370 003a 00       		.byte	0
+ 371 003b 0B       		.uleb128 0xb
+ 372 003c 0B       		.uleb128 0xb
+ 373 003d 49       		.uleb128 0x49
+ 374 003e 13       		.uleb128 0x13
+ 375 003f 00       		.byte	0
+ 376 0040 00       		.byte	0
+ 377 0041 06       		.uleb128 0x6
+ 378 0042 26       		.uleb128 0x26
+ 379 0043 00       		.byte	0
+ 380 0044 49       		.uleb128 0x49
+ 381 0045 13       		.uleb128 0x13
+ 382 0046 00       		.byte	0
+ 383 0047 00       		.byte	0
+ 384 0048 07       		.uleb128 0x7
+ 385 0049 01       		.uleb128 0x1
+ 386 004a 01       		.byte	0x1
+ 387 004b 49       		.uleb128 0x49
+ 388 004c 13       		.uleb128 0x13
+ 389 004d 01       		.uleb128 0x1
+ 390 004e 13       		.uleb128 0x13
+ 391 004f 00       		.byte	0
+ 392 0050 00       		.byte	0
+ 393 0051 08       		.uleb128 0x8
+ 394 0052 21       		.uleb128 0x21
+ 395 0053 00       		.byte	0
+ 396 0054 49       		.uleb128 0x49
+ 397 0055 13       		.uleb128 0x13
+ 398 0056 2F       		.uleb128 0x2f
+ 399 0057 0B       		.uleb128 0xb
+ 400 0058 00       		.byte	0
+ 401 0059 00       		.byte	0
+ 402 005a 09       		.uleb128 0x9
+ 403 005b 2E       		.uleb128 0x2e
+ 404 005c 01       		.byte	0x1
+ 405 005d 3F       		.uleb128 0x3f
+ 406 005e 0C       		.uleb128 0xc
+ 407 005f 03       		.uleb128 0x3
+ 408 0060 0E       		.uleb128 0xe
+ 409 0061 3A       		.uleb128 0x3a
+ 410 0062 0B       		.uleb128 0xb
+ 411 0063 3B       		.uleb128 0x3b
+ 412 0064 0B       		.uleb128 0xb
+ 413 0065 11       		.uleb128 0x11
+ 414 0066 01       		.uleb128 0x1
+ 415 0067 12       		.uleb128 0x12
+ 416 0068 01       		.uleb128 0x1
+ 417 0069 40       		.uleb128 0x40
+ 418 006a 06       		.uleb128 0x6
+ 419 006b 9642     		.uleb128 0x2116
+ 420 006d 0C       		.uleb128 0xc
+ 421 006e 01       		.uleb128 0x1
+ 422 006f 13       		.uleb128 0x13
+ 423 0070 00       		.byte	0
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccrkoeGt.s 			page 10
+
+
+ 424 0071 00       		.byte	0
+ 425 0072 0A       		.uleb128 0xa
+ 426 0073 34       		.uleb128 0x34
+ 427 0074 00       		.byte	0
+ 428 0075 03       		.uleb128 0x3
+ 429 0076 08       		.uleb128 0x8
+ 430 0077 3A       		.uleb128 0x3a
+ 431 0078 0B       		.uleb128 0xb
+ 432 0079 3B       		.uleb128 0x3b
+ 433 007a 0B       		.uleb128 0xb
+ 434 007b 49       		.uleb128 0x49
+ 435 007c 13       		.uleb128 0x13
+ 436 007d 00       		.byte	0
+ 437 007e 00       		.byte	0
+ 438 007f 0B       		.uleb128 0xb
+ 439 0080 0B       		.uleb128 0xb
+ 440 0081 01       		.byte	0x1
+ 441 0082 11       		.uleb128 0x11
+ 442 0083 01       		.uleb128 0x1
+ 443 0084 12       		.uleb128 0x12
+ 444 0085 01       		.uleb128 0x1
+ 445 0086 00       		.byte	0
+ 446 0087 00       		.byte	0
+ 447 0088 0C       		.uleb128 0xc
+ 448 0089 2E       		.uleb128 0x2e
+ 449 008a 01       		.byte	0x1
+ 450 008b 3F       		.uleb128 0x3f
+ 451 008c 0C       		.uleb128 0xc
+ 452 008d 03       		.uleb128 0x3
+ 453 008e 0E       		.uleb128 0xe
+ 454 008f 3A       		.uleb128 0x3a
+ 455 0090 0B       		.uleb128 0xb
+ 456 0091 3B       		.uleb128 0x3b
+ 457 0092 0B       		.uleb128 0xb
+ 458 0093 27       		.uleb128 0x27
+ 459 0094 0C       		.uleb128 0xc
+ 460 0095 49       		.uleb128 0x49
+ 461 0096 13       		.uleb128 0x13
+ 462 0097 3C       		.uleb128 0x3c
+ 463 0098 0C       		.uleb128 0xc
+ 464 0099 00       		.byte	0
+ 465 009a 00       		.byte	0
+ 466 009b 0D       		.uleb128 0xd
+ 467 009c 05       		.uleb128 0x5
+ 468 009d 00       		.byte	0
+ 469 009e 49       		.uleb128 0x49
+ 470 009f 13       		.uleb128 0x13
+ 471 00a0 00       		.byte	0
+ 472 00a1 00       		.byte	0
+ 473 00a2 0E       		.uleb128 0xe
+ 474 00a3 18       		.uleb128 0x18
+ 475 00a4 00       		.byte	0
+ 476 00a5 00       		.byte	0
+ 477 00a6 00       		.byte	0
+ 478 00a7 0F       		.uleb128 0xf
+ 479 00a8 34       		.uleb128 0x34
+ 480 00a9 00       		.byte	0
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccrkoeGt.s 			page 11
+
+
+ 481 00aa 03       		.uleb128 0x3
+ 482 00ab 0E       		.uleb128 0xe
+ 483 00ac 3A       		.uleb128 0x3a
+ 484 00ad 0B       		.uleb128 0xb
+ 485 00ae 3B       		.uleb128 0x3b
+ 486 00af 0B       		.uleb128 0xb
+ 487 00b0 49       		.uleb128 0x49
+ 488 00b1 13       		.uleb128 0x13
+ 489 00b2 3F       		.uleb128 0x3f
+ 490 00b3 0C       		.uleb128 0xc
+ 491 00b4 02       		.uleb128 0x2
+ 492 00b5 0A       		.uleb128 0xa
+ 493 00b6 00       		.byte	0
+ 494 00b7 00       		.byte	0
+ 495 00b8 10       		.uleb128 0x10
+ 496 00b9 34       		.uleb128 0x34
+ 497 00ba 00       		.byte	0
+ 498 00bb 03       		.uleb128 0x3
+ 499 00bc 08       		.uleb128 0x8
+ 500 00bd 3A       		.uleb128 0x3a
+ 501 00be 0B       		.uleb128 0xb
+ 502 00bf 3B       		.uleb128 0x3b
+ 503 00c0 0B       		.uleb128 0xb
+ 504 00c1 49       		.uleb128 0x49
+ 505 00c2 13       		.uleb128 0x13
+ 506 00c3 3F       		.uleb128 0x3f
+ 507 00c4 0C       		.uleb128 0xc
+ 508 00c5 02       		.uleb128 0x2
+ 509 00c6 0A       		.uleb128 0xa
+ 510 00c7 00       		.byte	0
+ 511 00c8 00       		.byte	0
+ 512 00c9 00       		.byte	0
+ 513              		.section	.debug_loc,"",%progbits
+ 514              	.Ldebug_loc0:
+ 515              	.LLST0:
+ 516 0000 00000000 		.4byte	.LFB33
+ 517 0004 02000000 		.4byte	.LCFI0
+ 518 0008 0200     		.2byte	0x2
+ 519 000a 7D       		.byte	0x7d
+ 520 000b 00       		.sleb128 0
+ 521 000c 02000000 		.4byte	.LCFI0
+ 522 0010 04000000 		.4byte	.LCFI1
+ 523 0014 0200     		.2byte	0x2
+ 524 0016 7D       		.byte	0x7d
+ 525 0017 10       		.sleb128 16
+ 526 0018 04000000 		.4byte	.LCFI1
+ 527 001c 06000000 		.4byte	.LCFI2
+ 528 0020 0200     		.2byte	0x2
+ 529 0022 7D       		.byte	0x7d
+ 530 0023 18       		.sleb128 24
+ 531 0024 06000000 		.4byte	.LCFI2
+ 532 0028 94000000 		.4byte	.LFE33
+ 533 002c 0200     		.2byte	0x2
+ 534 002e 77       		.byte	0x77
+ 535 002f 10       		.sleb128 16
+ 536 0030 00000000 		.4byte	0
+ 537 0034 00000000 		.4byte	0
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccrkoeGt.s 			page 12
+
+
+ 538              		.section	.debug_aranges,"",%progbits
+ 539 0000 1C000000 		.4byte	0x1c
+ 540 0004 0200     		.2byte	0x2
+ 541 0006 00000000 		.4byte	.Ldebug_info0
+ 542 000a 04       		.byte	0x4
+ 543 000b 00       		.byte	0
+ 544 000c 0000     		.2byte	0
+ 545 000e 0000     		.2byte	0
+ 546 0010 00000000 		.4byte	.LFB33
+ 547 0014 94000000 		.4byte	.LFE33-.LFB33
+ 548 0018 00000000 		.4byte	0
+ 549 001c 00000000 		.4byte	0
+ 550              		.section	.debug_ranges,"",%progbits
+ 551              	.Ldebug_ranges0:
+ 552 0000 00000000 		.4byte	.LFB33
+ 553 0004 94000000 		.4byte	.LFE33
+ 554 0008 00000000 		.4byte	0
+ 555 000c 00000000 		.4byte	0
+ 556              		.section	.debug_line,"",%progbits
+ 557              	.Ldebug_line0:
+ 558 0000 8D000000 		.section	.debug_str,"MS",%progbits,1
+ 558      02005300 
+ 558      00000201 
+ 558      FB0E0D00 
+ 558      01010101 
+ 559              	.LASF6:
+ 560 0000 6C6F6E67 		.ascii	"long long int\000"
+ 560      206C6F6E 
+ 560      6720696E 
+ 560      7400
+ 561              	.LASF11:
+ 562 000e 75696E74 		.ascii	"uint32\000"
+ 562      333200
+ 563              	.LASF8:
+ 564 0015 756E7369 		.ascii	"unsigned int\000"
+ 564      676E6564 
+ 564      20696E74 
+ 564      00
+ 565              	.LASF21:
+ 566 0022 6D61696E 		.ascii	"main\000"
+ 566      00
+ 567              	.LASF22:
+ 568 0027 73707269 		.ascii	"sprintf\000"
+ 568      6E746600 
+ 569              	.LASF18:
+ 570 002f 474E5520 		.ascii	"GNU C 4.7.3 20130312 (release) [ARM/embedded-4_7-br"
+ 570      4320342E 
+ 570      372E3320 
+ 570      32303133 
+ 570      30333132 
+ 571 0062 616E6368 		.ascii	"anch revision 196615]\000"
+ 571      20726576 
+ 571      6973696F 
+ 571      6E203139 
+ 571      36363135 
+ 572              	.LASF9:
+ 573 0078 75696E74 		.ascii	"uint8\000"
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccrkoeGt.s 			page 13
+
+
+ 573      3800
+ 574              	.LASF5:
+ 575 007e 6C6F6E67 		.ascii	"long unsigned int\000"
+ 575      20756E73 
+ 575      69676E65 
+ 575      6420696E 
+ 575      7400
+ 576              	.LASF20:
+ 577 0090 433A5C55 		.ascii	"C:\\Users\\Miriam\\Documents\\PSoC Creator\\USB-UAR"
+ 577      73657273 
+ 577      5C4D6972 
+ 577      69616D5C 
+ 577      446F6375 
+ 578 00be 545C5553 		.ascii	"T\\USB-UART.cydsn\000"
+ 578      422D5541 
+ 578      52542E63 
+ 578      7964736E 
+ 578      00
+ 579              	.LASF7:
+ 580 00cf 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 580      206C6F6E 
+ 580      6720756E 
+ 580      7369676E 
+ 580      65642069 
+ 581              	.LASF1:
+ 582 00e6 756E7369 		.ascii	"unsigned char\000"
+ 582      676E6564 
+ 582      20636861 
+ 582      7200
+ 583              	.LASF14:
+ 584 00f4 63686172 		.ascii	"char\000"
+ 584      00
+ 585              	.LASF4:
+ 586 00f9 6C6F6E67 		.ascii	"long int\000"
+ 586      20696E74 
+ 586      00
+ 587              	.LASF2:
+ 588 0102 73686F72 		.ascii	"short int\000"
+ 588      7420696E 
+ 588      7400
+ 589              	.LASF16:
+ 590 010c 63617056 		.ascii	"capValue\000"
+ 590      616C7565 
+ 590      00
+ 591              	.LASF13:
+ 592 0115 646F7562 		.ascii	"double\000"
+ 592      6C6500
+ 593              	.LASF3:
+ 594 011c 73686F72 		.ascii	"short unsigned int\000"
+ 594      7420756E 
+ 594      7369676E 
+ 594      65642069 
+ 594      6E7400
+ 595              	.LASF0:
+ 596 012f 7369676E 		.ascii	"signed char\000"
+ 596      65642063 
+ 596      68617200 
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccrkoeGt.s 			page 14
+
+
+ 597              	.LASF12:
+ 598 013b 666C6F61 		.ascii	"float\000"
+ 598      7400
+ 599              	.LASF19:
+ 600 0141 2E5C6D61 		.ascii	".\\main.c\000"
+ 600      696E2E63 
+ 600      00
+ 601              	.LASF10:
+ 602 014a 75696E74 		.ascii	"uint16\000"
+ 602      313600
+ 603              	.LASF17:
+ 604 0151 62756666 		.ascii	"buffer\000"
+ 604      657200
+ 605              	.LASF15:
+ 606 0158 73697A65 		.ascii	"sizetype\000"
+ 606      74797065 
+ 606      00
+ 607              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.7.3 20130312 (release) [ARM/embedded-4_7-br

@@ -1,0 +1,3 @@
+--------------- Build Started: 12/10/2014 21:54:30 Project: USB-UART, Configuration: ARM GCC 4.7.3 Debug ---------------
+Build process unable to delete contents of code gen dir.  Error: Failed to delete E:\jeffsStuff\USB-UART\USB-UART.cydsn\codegentemp\bitstream.txt:Zone.Identifier: The given path's format is not supported.
+--------------- Build Failed: 12/10/2014 21:54:31 ---------------

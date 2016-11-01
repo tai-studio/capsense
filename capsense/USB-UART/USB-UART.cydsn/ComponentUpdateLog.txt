@@ -1,0 +1,13 @@
+Last Modified Date & Time: 12/08/2014 12:36:05
+
+Project : USB-UART
+		Schematic : TopDesign
+
+		UART	v 1.0tv 1.20
+
+Project : USB-UART
+		Design Wide APIs
+
+		cy_boot	v 3.40	v 4.11
+
+

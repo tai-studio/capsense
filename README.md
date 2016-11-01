@@ -1,9 +1,9 @@
 # Capacitive sensing with Cypress PSoC-4
 *2015/2016 Jeff Snyder, Till Bovermann*
 
-This document explains how to use a [Cypress PSoC 4 CY8CKIT-049 Prototyping Kit](http://www.cypress.com/?rid=92146) as a capacitive sensing element that forwards the measured data via a serial connection. The board I use is build around a [PSoC 4 chip](http://www.cypress.com/psoc4/), which is a cheap and powerful programmable microcontroller with integrated re-programmable analogue cirquitry.
+This is a notepad on what is needed to use a [Cypress PSoC 4 CY8CKIT-049 Prototyping Kit](http://www.cypress.com/?rid=92146) as a capacitive sensing element that forwards the measured data via a serial connection. The board used is build around a [PSoC 4 chip](http://www.cypress.com/psoc4/), which is a cheap and powerful programmable microcontroller with integrated re-programmable analogue cirquitry, developed especially for capacitive sensing demands.
 
-Unfortunately, the whole process requires a windows computer but once it is set up, it is fairly easy to use. You may also install the whole software in a virtual machine on linux or OSX. Wine is unfortunately not supported.
+Unfortunately, the whole process requires a windows computer but once it is set up, it is fairly easy to use. You may also install the whole software in a virtual machine on Linux or OSX. Wine is unfortunately not supported.
 
 ## Materials
 
@@ -25,5 +25,6 @@ Unfortunately, the whole process requires a windows computer but once it is set 
 
 ## Example Code
 
-Copy the capsense example folder to your machine. If on a virtual machine, *do not* place it in a folder that is shared with the host as this seem to cause trouble when compiling.
+Copy the [capsense example folder](https://github.com/tai-studio/capsense) to your machine. If on a virtual machine, *do not* place it in a folder that is shared with the host as this seems to cause trouble when compiling.
 
+Follow instructions on compiling as found on the [PSoC Creator](http://www.cypress.com/go/psoccreator) website.

@@ -1,0 +1,7 @@
+--------------- Rebuild Started: 12/08/2014 14:20:51 Project: main.c, Configuration: ARM GCC 4.7.3 Debug ---------------
+arm-none-eabi-gcc.exe -I. -I./Generated_Source/PSoC4 -Wno-main -mcpu=cortex-m0 -mthumb -Wall -g -D DEBUG -Wa,-alh=.\CortexM0\ARM_GCC_473\Debug\main.lst -ffunction-sections -c .\main.c -o .\CortexM0\ARM_GCC_473\Debug\main.o
+.\main.c: In function 'main':
+.\main.c:77:9: warning: implicit declaration of function 'sprintf' [-Wimplicit-function-declaration]
+.\main.c:77:9: warning: incompatible implicit declaration of built-in function 'sprintf' [enabled by default]
+.\main.c:58:11: warning: unused variable 'ch' [-Wunused-variable]
+--------------- Rebuild Succeeded: 12/08/2014 14:20:53 ---------------

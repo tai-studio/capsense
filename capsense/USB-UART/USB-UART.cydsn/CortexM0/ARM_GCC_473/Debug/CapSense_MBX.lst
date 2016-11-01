@@ -1,0 +1,1270 @@
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccoMDPJi.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"CapSense_MBX.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.CapSense_InitMailbox,"ax",%progbits
+  18              		.align	2
+  19              		.global	CapSense_InitMailbox
+  20              		.code	16
+  21              		.thumb_func
+  22              		.type	CapSense_InitMailbox, %function
+  23              	CapSense_InitMailbox:
+  24              	.LFB33:
+  25              		.file 1 ".\\Generated_Source\\PSoC4\\CapSense_MBX.c"
+   1:.\Generated_Source\PSoC4/CapSense_MBX.c **** /*******************************************************************************
+   2:.\Generated_Source\PSoC4/CapSense_MBX.c **** * File Name: CapSense_MBX.c
+   3:.\Generated_Source\PSoC4/CapSense_MBX.c **** * Version 2.0
+   4:.\Generated_Source\PSoC4/CapSense_MBX.c **** *
+   5:.\Generated_Source\PSoC4/CapSense_MBX.c **** * Description:
+   6:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  This file provides the source code of Tuner communication APIs for the 
+   7:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  CapSense CSD component.
+   8:.\Generated_Source\PSoC4/CapSense_MBX.c **** *
+   9:.\Generated_Source\PSoC4/CapSense_MBX.c **** * Note:
+  10:.\Generated_Source\PSoC4/CapSense_MBX.c **** *
+  11:.\Generated_Source\PSoC4/CapSense_MBX.c **** ********************************************************************************
+  12:.\Generated_Source\PSoC4/CapSense_MBX.c **** * Copyright 2014, Cypress Semiconductor Corporation.  All rights reserved.
+  13:.\Generated_Source\PSoC4/CapSense_MBX.c **** * You may use this file only in accordance with the license, terms, conditions,
+  14:.\Generated_Source\PSoC4/CapSense_MBX.c **** * disclaimers, and limitations in the end user license agreement accompanying
+  15:.\Generated_Source\PSoC4/CapSense_MBX.c **** * the software package with which this file was provided.
+  16:.\Generated_Source\PSoC4/CapSense_MBX.c **** *******************************************************************************/
+  17:.\Generated_Source\PSoC4/CapSense_MBX.c **** 
+  18:.\Generated_Source\PSoC4/CapSense_MBX.c **** #include "CapSense_MBX.h"
+  19:.\Generated_Source\PSoC4/CapSense_MBX.c **** 
+  20:.\Generated_Source\PSoC4/CapSense_MBX.c **** extern uint8 CapSense_sensorOnMask[(((CapSense_TOTAL_SENSOR_COUNT - 1u) / 8u) + 1u)];
+  21:.\Generated_Source\PSoC4/CapSense_MBX.c **** extern uint16 CapSense_sensorBaseline[CapSense_TOTAL_SENSOR_COUNT];
+  22:.\Generated_Source\PSoC4/CapSense_MBX.c **** extern uint8 CapSense_sensorSignal[CapSense_TOTAL_SENSOR_COUNT];
+  23:.\Generated_Source\PSoC4/CapSense_MBX.c **** extern uint8 CapSense_sensorBaselineLow[CapSense_TOTAL_SENSOR_COUNT];
+  24:.\Generated_Source\PSoC4/CapSense_MBX.c **** 
+  25:.\Generated_Source\PSoC4/CapSense_MBX.c **** #if (CapSense_TUNING_METHOD == CapSense__TUNING_MANUAL)
+  26:.\Generated_Source\PSoC4/CapSense_MBX.c ****     /*******************************************************************************
+  27:.\Generated_Source\PSoC4/CapSense_MBX.c ****     * Function Name: CapSense_InitParams
+  28:.\Generated_Source\PSoC4/CapSense_MBX.c ****     ********************************************************************************
+  29:.\Generated_Source\PSoC4/CapSense_MBX.c ****     *
+  30:.\Generated_Source\PSoC4/CapSense_MBX.c ****     * Summary:
+  31:.\Generated_Source\PSoC4/CapSense_MBX.c ****     *  Configures the component parameters to match the parameters in the inbox.
+  32:.\Generated_Source\PSoC4/CapSense_MBX.c ****     *  Used only in the manual tuning mode to apply new scanning parameters from the Tuner 
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccoMDPJi.s 			page 2
+
+
+  33:.\Generated_Source\PSoC4/CapSense_MBX.c ****     *  GUI.
+  34:.\Generated_Source\PSoC4/CapSense_MBX.c ****     *
+  35:.\Generated_Source\PSoC4/CapSense_MBX.c ****     * Parameters:
+  36:.\Generated_Source\PSoC4/CapSense_MBX.c ****     *  inbox:  Pointer to Inbox structure in RAM.
+  37:.\Generated_Source\PSoC4/CapSense_MBX.c ****     *
+  38:.\Generated_Source\PSoC4/CapSense_MBX.c ****     * Return:
+  39:.\Generated_Source\PSoC4/CapSense_MBX.c ****     *  None. Contents of the structure are not modified.
+  40:.\Generated_Source\PSoC4/CapSense_MBX.c ****     * 
+  41:.\Generated_Source\PSoC4/CapSense_MBX.c ****     * Global Variables:
+  42:.\Generated_Source\PSoC4/CapSense_MBX.c ****     *  CapSense_idacSettings[] - used to store the idac value for all the sensors.
+  43:.\Generated_Source\PSoC4/CapSense_MBX.c ****     *  CapSense_fingerThreshold[] - used to store the finger threshold for all 
+  44:.\Generated_Source\PSoC4/CapSense_MBX.c ****     *  the widgets.
+  45:.\Generated_Source\PSoC4/CapSense_MBX.c ****     *  CapSense_noiseThreshold[] - used to store the noise threshold for all 
+  46:.\Generated_Source\PSoC4/CapSense_MBX.c ****     *  the widgets.
+  47:.\Generated_Source\PSoC4/CapSense_MBX.c ****     *  CapSense_hysteresis[] - used to store the finger threshold for all 
+  48:.\Generated_Source\PSoC4/CapSense_MBX.c ****     *  the widgets.
+  49:.\Generated_Source\PSoC4/CapSense_MBX.c ****     *  CapSense_debounce[] - used to store the finger threshold for all the 
+  50:.\Generated_Source\PSoC4/CapSense_MBX.c ****     *  widgets.
+  51:.\Generated_Source\PSoC4/CapSense_MBX.c ****     *  CapSense_INBOX inbox - the structure which is used as an input buffer
+  52:.\Generated_Source\PSoC4/CapSense_MBX.c ****     *  for the parameters from the Tuner GUI. Used only in the manual tuning mode.
+  53:.\Generated_Source\PSoC4/CapSense_MBX.c **** 	*
+  54:.\Generated_Source\PSoC4/CapSense_MBX.c **** 	* Side Effects:
+  55:.\Generated_Source\PSoC4/CapSense_MBX.c **** 	*  None
+  56:.\Generated_Source\PSoC4/CapSense_MBX.c **** 	* 
+  57:.\Generated_Source\PSoC4/CapSense_MBX.c ****     *******************************************************************************/
+  58:.\Generated_Source\PSoC4/CapSense_MBX.c ****     static void CapSense_InitParams(volatile const CapSense_INBOX *inbox);
+  59:.\Generated_Source\PSoC4/CapSense_MBX.c ****     static void CapSense_InitParams(volatile const CapSense_INBOX *inbox)
+  60:.\Generated_Source\PSoC4/CapSense_MBX.c ****     {
+  61:.\Generated_Source\PSoC4/CapSense_MBX.c ****         /* Define widget sensor belongs to */
+  62:.\Generated_Source\PSoC4/CapSense_MBX.c ****         uint8 sensor = inbox->sensorIndex;
+  63:.\Generated_Source\PSoC4/CapSense_MBX.c ****         uint8 widget = CapSense_widgetNumber[sensor];
+  64:.\Generated_Source\PSoC4/CapSense_MBX.c ****         
+  65:.\Generated_Source\PSoC4/CapSense_MBX.c ****         /* Scanning parameters */
+  66:.\Generated_Source\PSoC4/CapSense_MBX.c ****         CapSense_modulationIDAC[sensor] = inbox->idac1Settings; 
+  67:.\Generated_Source\PSoC4/CapSense_MBX.c **** 
+  68:.\Generated_Source\PSoC4/CapSense_MBX.c ****         #if (CapSense_IDAC_CNT == 2u)
+  69:.\Generated_Source\PSoC4/CapSense_MBX.c ****             CapSense_compensationIDAC[sensor] = inbox->idac2Settings;
+  70:.\Generated_Source\PSoC4/CapSense_MBX.c ****         #endif /* ( CapSense_IDAC_CNT == 2u ) */
+  71:.\Generated_Source\PSoC4/CapSense_MBX.c **** 
+  72:.\Generated_Source\PSoC4/CapSense_MBX.c ****         CapSense_widgetResolution[widget] = (uint32)((uint32)inbox->resolution << 
+  73:.\Generated_Source\PSoC4/CapSense_MBX.c ****                                                     CapSense_MSB_RESOLUTION_OFFSET);
+  74:.\Generated_Source\PSoC4/CapSense_MBX.c ****                                                     
+  75:.\Generated_Source\PSoC4/CapSense_MBX.c ****         CapSense_widgetResolution[widget] |= CapSense_RESOLUTION_8_BITS;                           
+  76:.\Generated_Source\PSoC4/CapSense_MBX.c **** 
+  77:.\Generated_Source\PSoC4/CapSense_MBX.c ****         #if (CapSense_TOTAL_GENERICS_COUNT)
+  78:.\Generated_Source\PSoC4/CapSense_MBX.c ****             /* Exclude generic widget */
+  79:.\Generated_Source\PSoC4/CapSense_MBX.c ****             if(widget < CapSense_END_OF_WIDGETS_INDEX)
+  80:.\Generated_Source\PSoC4/CapSense_MBX.c ****             {
+  81:.\Generated_Source\PSoC4/CapSense_MBX.c ****         #endif  /* CapSense_TOTAL_GENERICS_COUNT */
+  82:.\Generated_Source\PSoC4/CapSense_MBX.c ****         
+  83:.\Generated_Source\PSoC4/CapSense_MBX.c ****             /* High level parameters */
+  84:.\Generated_Source\PSoC4/CapSense_MBX.c ****             CapSense_fingerThreshold[widget] = inbox->fingerThreshold;
+  85:.\Generated_Source\PSoC4/CapSense_MBX.c ****             CapSense_noiseThreshold[widget]  = inbox->noiseThreshold;
+  86:.\Generated_Source\PSoC4/CapSense_MBX.c ****             
+  87:.\Generated_Source\PSoC4/CapSense_MBX.c ****             CapSense_hysteresis[widget] = inbox->hysteresis;
+  88:.\Generated_Source\PSoC4/CapSense_MBX.c ****             CapSense_debounce[widget]   = inbox->debounce;
+  89:.\Generated_Source\PSoC4/CapSense_MBX.c ****         
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccoMDPJi.s 			page 3
+
+
+  90:.\Generated_Source\PSoC4/CapSense_MBX.c ****         #if (CapSense_TOTAL_GENERICS_COUNT)
+  91:.\Generated_Source\PSoC4/CapSense_MBX.c ****             /* Exclude generic widget */
+  92:.\Generated_Source\PSoC4/CapSense_MBX.c ****             }
+  93:.\Generated_Source\PSoC4/CapSense_MBX.c ****         #endif  /* CapSense_TOTAL_GENERICS_COUNT */
+  94:.\Generated_Source\PSoC4/CapSense_MBX.c **** 
+  95:.\Generated_Source\PSoC4/CapSense_MBX.c ****         #if ( CapSense_MULTIPLE_FREQUENCY_SET )
+  96:.\Generated_Source\PSoC4/CapSense_MBX.c ****         
+  97:.\Generated_Source\PSoC4/CapSense_MBX.c ****             CapSense_senseClkDividerVal[sensor] = inbox->analogSwitchDivider;
+  98:.\Generated_Source\PSoC4/CapSense_MBX.c ****             CapSense_sampleClkDividerVal[sensor] = inbox->modulatorDivider;
+  99:.\Generated_Source\PSoC4/CapSense_MBX.c ****         #else
+ 100:.\Generated_Source\PSoC4/CapSense_MBX.c ****             CapSense_senseClkDividerVal = inbox->analogSwitchDivider;
+ 101:.\Generated_Source\PSoC4/CapSense_MBX.c ****             CapSense_sampleClkDividerVal = inbox->modulatorDivider;
+ 102:.\Generated_Source\PSoC4/CapSense_MBX.c ****         #endif /* ( CapSense_MULTIPLE_FREQUENCY_SET ) */
+ 103:.\Generated_Source\PSoC4/CapSense_MBX.c **** 
+ 104:.\Generated_Source\PSoC4/CapSense_MBX.c ****         /* Re-Init baselines */
+ 105:.\Generated_Source\PSoC4/CapSense_MBX.c ****         CapSense_InitializeAllBaselines();
+ 106:.\Generated_Source\PSoC4/CapSense_MBX.c ****     }
+ 107:.\Generated_Source\PSoC4/CapSense_MBX.c **** #endif  /* (CapSense_TUNING_METHOD == CapSense__TUNING_MANUAL) */
+ 108:.\Generated_Source\PSoC4/CapSense_MBX.c **** 
+ 109:.\Generated_Source\PSoC4/CapSense_MBX.c **** 
+ 110:.\Generated_Source\PSoC4/CapSense_MBX.c **** /*******************************************************************************
+ 111:.\Generated_Source\PSoC4/CapSense_MBX.c **** * Function Name: CapSense_InitMailbox
+ 112:.\Generated_Source\PSoC4/CapSense_MBX.c **** ********************************************************************************
+ 113:.\Generated_Source\PSoC4/CapSense_MBX.c **** *
+ 114:.\Generated_Source\PSoC4/CapSense_MBX.c **** * Summary:
+ 115:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  Initializes parameters of the mailbox structure.
+ 116:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  Sets the type and size of the mailbox structure. 
+ 117:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  Sets a check sum to check by the Tuner GUI and noReadMsg flag to indicate that this 
+ 118:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  is the first communication packet.
+ 119:.\Generated_Source\PSoC4/CapSense_MBX.c **** *
+ 120:.\Generated_Source\PSoC4/CapSense_MBX.c **** * Parameters:
+ 121:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  mbx:  Pointer to Mailbox structure in RAM.
+ 122:.\Generated_Source\PSoC4/CapSense_MBX.c **** *
+ 123:.\Generated_Source\PSoC4/CapSense_MBX.c **** * Return:
+ 124:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  None. Modifies the contents of mbx and mbx->outbox.
+ 125:.\Generated_Source\PSoC4/CapSense_MBX.c **** *
+ 126:.\Generated_Source\PSoC4/CapSense_MBX.c **** * Global Variables:
+ 127:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  CapSense_MAILBOXES - the structure which incorporates two fields: 
+ 128:.\Generated_Source\PSoC4/CapSense_MBX.c **** *    - numMailBoxes (number of mailboxes);
+ 129:.\Generated_Source\PSoC4/CapSense_MBX.c **** *    - CapSense_MAILBOX csdMailbox;
+ 130:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  CapSense_MAILBOX - the structure which incorporates a status output and
+ 131:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  input buffer fields and CapSense_OUTBOX and CapSense_INBOX.
+ 132:.\Generated_Source\PSoC4/CapSense_MBX.c **** *    - type (used as the outbox read status of the Tuner GUI);
+ 133:.\Generated_Source\PSoC4/CapSense_MBX.c **** *    - size (used as the inbox apply status of the component);
+ 134:.\Generated_Source\PSoC4/CapSense_MBX.c **** *    - CapSense_OUTBOX outbox - the structure which is used as an output 
+ 135:.\Generated_Source\PSoC4/CapSense_MBX.c **** *      buffer to report data to the Tuner GUI.
+ 136:.\Generated_Source\PSoC4/CapSense_MBX.c **** *    - CapSense_INBOX inbox - the structure which is used as an input buffer
+ 137:.\Generated_Source\PSoC4/CapSense_MBX.c **** *      for the parameters from the Tuner GUI. Used only in the manual tuning mode.
+ 138:.\Generated_Source\PSoC4/CapSense_MBX.c **** *
+ 139:.\Generated_Source\PSoC4/CapSense_MBX.c **** * Side Effects:
+ 140:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  None
+ 141:.\Generated_Source\PSoC4/CapSense_MBX.c **** * 
+ 142:.\Generated_Source\PSoC4/CapSense_MBX.c **** *******************************************************************************/
+ 143:.\Generated_Source\PSoC4/CapSense_MBX.c **** void CapSense_InitMailbox(volatile CapSense_MAILBOX *mbx)
+ 144:.\Generated_Source\PSoC4/CapSense_MBX.c **** {
+  26              		.loc 1 144 0
+  27              		.cfi_startproc
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccoMDPJi.s 			page 4
+
+
+  28 0000 80B5     		push	{r7, lr}
+  29              	.LCFI0:
+  30              		.cfi_def_cfa_offset 8
+  31              		.cfi_offset 7, -8
+  32              		.cfi_offset 14, -4
+  33 0002 82B0     		sub	sp, sp, #8
+  34              	.LCFI1:
+  35              		.cfi_def_cfa_offset 16
+  36 0004 00AF     		add	r7, sp, #0
+  37              	.LCFI2:
+  38              		.cfi_def_cfa_register 7
+  39 0006 7860     		str	r0, [r7, #4]
+ 145:.\Generated_Source\PSoC4/CapSense_MBX.c ****     /* Restore TYPE_ID (clear busy flag) to indicate "action complete" */
+ 146:.\Generated_Source\PSoC4/CapSense_MBX.c ****     mbx->type = CapSense_TYPE_ID;
+  40              		.loc 1 146 0
+  41 0008 7B68     		ldr	r3, [r7, #4]
+  42 000a 0422     		mov	r2, #4
+  43 000c 1A70     		strb	r2, [r3]
+ 147:.\Generated_Source\PSoC4/CapSense_MBX.c ****     /* Restore default value - clear "have_msg" */
+ 148:.\Generated_Source\PSoC4/CapSense_MBX.c ****     mbx->size = sizeof(CapSense_MAILBOX);
+  44              		.loc 1 148 0
+  45 000e 7B68     		ldr	r3, [r7, #4]
+  46 0010 5978     		ldrb	r1, [r3, #1]
+  47 0012 0022     		mov	r2, #0
+  48 0014 0A40     		and	r2, r1
+  49 0016 1A21     		mov	r1, #26
+  50 0018 0A43     		orr	r2, r1
+  51 001a 5A70     		strb	r2, [r3, #1]
+  52 001c 9978     		ldrb	r1, [r3, #2]
+  53 001e 0022     		mov	r2, #0
+  54 0020 0A40     		and	r2, r1
+  55 0022 9A70     		strb	r2, [r3, #2]
+ 149:.\Generated_Source\PSoC4/CapSense_MBX.c ****     
+ 150:.\Generated_Source\PSoC4/CapSense_MBX.c ****     /* Additional fields for async and reset handling */
+ 151:.\Generated_Source\PSoC4/CapSense_MBX.c ****     #if(CapSense_TUNING_METHOD == CapSense__TUNING_MANUAL)
+ 152:.\Generated_Source\PSoC4/CapSense_MBX.c ****         mbx->outbox.noReadMsg = 1u;
+ 153:.\Generated_Source\PSoC4/CapSense_MBX.c ****     #endif  /* (CapSense_TUNING_METHOD == CapSense__TUNING_MANUAL) */
+ 154:.\Generated_Source\PSoC4/CapSense_MBX.c ****     
+ 155:.\Generated_Source\PSoC4/CapSense_MBX.c ****     mbx->outbox.checkSum = (uint16)(CapSense_CHECK_SUM);
+  56              		.loc 1 155 0
+  57 0024 7B68     		ldr	r3, [r7, #4]
+  58 0026 197E     		ldrb	r1, [r3, #24]
+  59 0028 0022     		mov	r2, #0
+  60 002a 0A40     		and	r2, r1
+  61 002c 7A21     		mov	r1, #122
+  62 002e 0A43     		orr	r2, r1
+  63 0030 1A76     		strb	r2, [r3, #24]
+  64 0032 597E     		ldrb	r1, [r3, #25]
+  65 0034 0022     		mov	r2, #0
+  66 0036 0A40     		and	r2, r1
+  67 0038 0E21     		mov	r1, #14
+  68 003a 0A43     		orr	r2, r1
+  69 003c 5A76     		strb	r2, [r3, #25]
+ 156:.\Generated_Source\PSoC4/CapSense_MBX.c **** }
+  70              		.loc 1 156 0
+  71 003e BD46     		mov	sp, r7
+  72 0040 02B0     		add	sp, sp, #8
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccoMDPJi.s 			page 5
+
+
+  73              		@ sp needed for prologue
+  74 0042 80BD     		pop	{r7, pc}
+  75              		.cfi_endproc
+  76              	.LFE33:
+  77              		.size	CapSense_InitMailbox, .-CapSense_InitMailbox
+  78              		.section	.text.CapSense_PostMessage,"ax",%progbits
+  79              		.align	2
+  80              		.global	CapSense_PostMessage
+  81              		.code	16
+  82              		.thumb_func
+  83              		.type	CapSense_PostMessage, %function
+  84              	CapSense_PostMessage:
+  85              	.LFB34:
+ 157:.\Generated_Source\PSoC4/CapSense_MBX.c **** 
+ 158:.\Generated_Source\PSoC4/CapSense_MBX.c **** 
+ 159:.\Generated_Source\PSoC4/CapSense_MBX.c **** /*******************************************************************************
+ 160:.\Generated_Source\PSoC4/CapSense_MBX.c **** * Function Name:  CapSense_PostMessage
+ 161:.\Generated_Source\PSoC4/CapSense_MBX.c **** ********************************************************************************
+ 162:.\Generated_Source\PSoC4/CapSense_MBX.c **** *
+ 163:.\Generated_Source\PSoC4/CapSense_MBX.c **** * Summary:
+ 164:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  This blocking function waits while the Tuner GUI reports that the mailbox content
+ 165:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  could be modified (clears CapSense_BUSY_FLAG). Then loads the report 
+ 166:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  data to the outbox and sets a busy flag.
+ 167:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  In the manual tuning mode the report data is:
+ 168:.\Generated_Source\PSoC4/CapSense_MBX.c **** *    - raw data, baseline, signal;
+ 169:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  In the auto tuning mode the added data is:
+ 170:.\Generated_Source\PSoC4/CapSense_MBX.c **** *    - fingerThreshold;
+ 171:.\Generated_Source\PSoC4/CapSense_MBX.c **** *    - noiseThreshold;
+ 172:.\Generated_Source\PSoC4/CapSense_MBX.c **** *    - scanResolution;
+ 173:.\Generated_Source\PSoC4/CapSense_MBX.c **** *    - idacValue;
+ 174:.\Generated_Source\PSoC4/CapSense_MBX.c **** *    - prescaler.
+ 175:.\Generated_Source\PSoC4/CapSense_MBX.c **** *
+ 176:.\Generated_Source\PSoC4/CapSense_MBX.c **** * Parameters:
+ 177:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  mbx:  Pointer to Mailbox structure in RAM.
+ 178:.\Generated_Source\PSoC4/CapSense_MBX.c **** *
+ 179:.\Generated_Source\PSoC4/CapSense_MBX.c **** * Return:
+ 180:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  None. Modifies the contents of mbx->outbox.
+ 181:.\Generated_Source\PSoC4/CapSense_MBX.c **** *
+ 182:.\Generated_Source\PSoC4/CapSense_MBX.c **** * Global Variables:
+ 183:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  CapSense_MAILBOXES - the structure which incorporates two fields: 
+ 184:.\Generated_Source\PSoC4/CapSense_MBX.c **** *    - numMailBoxes (number of mailboxes);
+ 185:.\Generated_Source\PSoC4/CapSense_MBX.c **** *    - CapSense_MAILBOX csdMailbox;
+ 186:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  CapSense_MAILBOX - the structure which incorporates the status output and
+ 187:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  input buffer fields and CapSense_OUTBOX and CapSense_INBOX.
+ 188:.\Generated_Source\PSoC4/CapSense_MBX.c **** *    - type (used as the  outbox read status of the Tuner GUI);
+ 189:.\Generated_Source\PSoC4/CapSense_MBX.c **** *    - size (used as the inbox apply status of the component);
+ 190:.\Generated_Source\PSoC4/CapSense_MBX.c **** *    - CapSense_OUTBOX outbox - the structure which is used as an output 
+ 191:.\Generated_Source\PSoC4/CapSense_MBX.c **** *      buffer to report data to the Tuner GUI.
+ 192:.\Generated_Source\PSoC4/CapSense_MBX.c **** *    - CapSense_INBOX inbox - the structure which is used as an input buffer
+ 193:.\Generated_Source\PSoC4/CapSense_MBX.c **** *      for parameters from the Tuner GUI. Used only in the manual tuning mode.
+ 194:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  CapSense_lowLevelTuningDone - used to notify the Tuner GUI that 
+ 195:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  tuning of the scanning parameters is done. The scanning parameters in the mailbox
+ 196:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  will not be updated after clearing it.
+ 197:.\Generated_Source\PSoC4/CapSense_MBX.c **** *
+ 198:.\Generated_Source\PSoC4/CapSense_MBX.c **** * Side Effects:
+ 199:.\Generated_Source\PSoC4/CapSense_MBX.c **** *  None
+ 200:.\Generated_Source\PSoC4/CapSense_MBX.c **** *
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccoMDPJi.s 			page 6
+
+
+ 201:.\Generated_Source\PSoC4/CapSense_MBX.c **** *******************************************************************************/
+ 202:.\Generated_Source\PSoC4/CapSense_MBX.c **** void CapSense_PostMessage(volatile CapSense_MAILBOX *mbx)
+ 203:.\Generated_Source\PSoC4/CapSense_MBX.c **** {
+  86              		.loc 1 203 0
+  87              		.cfi_startproc
+  88 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  89              	.LCFI3:
+  90              		.cfi_def_cfa_offset 20
+  91              		.cfi_offset 4, -20
+  92              		.cfi_offset 5, -16
+  93              		.cfi_offset 6, -12
+  94              		.cfi_offset 7, -8
+  95              		.cfi_offset 14, -4
+  96 0002 85B0     		sub	sp, sp, #20
+  97              	.LCFI4:
+  98              		.cfi_def_cfa_offset 40
+  99 0004 00AF     		add	r7, sp, #0
+ 100              	.LCFI5:
+ 101              		.cfi_def_cfa_register 7
+ 102 0006 7860     		str	r0, [r7, #4]
+ 204:.\Generated_Source\PSoC4/CapSense_MBX.c ****     uint8 i;
+ 205:.\Generated_Source\PSoC4/CapSense_MBX.c **** 
+ 206:.\Generated_Source\PSoC4/CapSense_MBX.c ****     /* Check busy flag */
+ 207:.\Generated_Source\PSoC4/CapSense_MBX.c ****     while (mbx->type != CapSense_TYPE_ID){;}
+ 103              		.loc 1 207 0
+ 104 0008 C046     		mov	r8, r8
+ 105              	.L3:
+ 106              		.loc 1 207 0 is_stmt 0 discriminator 1
+ 107 000a 7B68     		ldr	r3, [r7, #4]
+ 108 000c 1B78     		ldrb	r3, [r3]
+ 109 000e DBB2     		uxtb	r3, r3
+ 110 0010 042B     		cmp	r3, #4
+ 111 0012 FAD1     		bne	.L3
+ 208:.\Generated_Source\PSoC4/CapSense_MBX.c **** 
+ 209:.\Generated_Source\PSoC4/CapSense_MBX.c ****     /* Copy all data - Raw, Base, Signal, OnMask */
+ 210:.\Generated_Source\PSoC4/CapSense_MBX.c ****     for(i=0u; i < CapSense_TOTAL_SENSOR_COUNT; i++)
+ 112              		.loc 1 210 0 is_stmt 1
+ 113 0014 3B1C     		mov	r3, r7
+ 114 0016 0F33     		add	r3, r3, #15
+ 115 0018 0022     		mov	r2, #0
+ 116 001a 1A70     		strb	r2, [r3]
+ 117 001c 4EE0     		b	.L4
+ 118              	.L5:
+ 211:.\Generated_Source\PSoC4/CapSense_MBX.c ****     {
+ 212:.\Generated_Source\PSoC4/CapSense_MBX.c ****         mbx->outbox.rawData[i]  = CapSense_sensorRaw[i];
+ 119              		.loc 1 212 0 discriminator 2
+ 120 001e 3B1C     		mov	r3, r7
+ 121 0020 0F33     		add	r3, r3, #15
+ 122 0022 1B78     		ldrb	r3, [r3]
+ 123 0024 3A1C     		mov	r2, r7
+ 124 0026 0F32     		add	r2, r2, #15
+ 125 0028 1178     		ldrb	r1, [r2]
+ 126 002a 2A4A     		ldr	r2, .L6
+ 127 002c 4900     		lsl	r1, r1, #1
+ 128 002e 895A     		ldrh	r1, [r1, r2]
+ 129 0030 7A68     		ldr	r2, [r7, #4]
+ 130 0032 5B00     		lsl	r3, r3, #1
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccoMDPJi.s 			page 7
+
+
+ 131 0034 FF20     		mov	r0, #255
+ 132 0036 0C1C     		mov	r4, r1
+ 133 0038 0440     		and	r4, r0
+ 134 003a D018     		add	r0, r2, r3
+ 135 003c C678     		ldrb	r6, [r0, #3]
+ 136 003e 0025     		mov	r5, #0
+ 137 0040 3540     		and	r5, r6
+ 138 0042 2C43     		orr	r4, r5
+ 139 0044 C470     		strb	r4, [r0, #3]
+ 140 0046 090A     		lsr	r1, r1, #8
+ 141 0048 88B2     		uxth	r0, r1
+ 142 004a D318     		add	r3, r2, r3
+ 143 004c 1979     		ldrb	r1, [r3, #4]
+ 144 004e 0022     		mov	r2, #0
+ 145 0050 0A40     		and	r2, r1
+ 146 0052 111C     		add	r1, r2, #0
+ 147 0054 021C     		add	r2, r0, #0
+ 148 0056 0A43     		orr	r2, r1
+ 149 0058 1A71     		strb	r2, [r3, #4]
+ 213:.\Generated_Source\PSoC4/CapSense_MBX.c ****         mbx->outbox.baseLine[i] = CapSense_sensorBaseline[i];
+ 150              		.loc 1 213 0 discriminator 2
+ 151 005a 3B1C     		mov	r3, r7
+ 152 005c 0F33     		add	r3, r3, #15
+ 153 005e 1B78     		ldrb	r3, [r3]
+ 154 0060 3A1C     		mov	r2, r7
+ 155 0062 0F32     		add	r2, r2, #15
+ 156 0064 1178     		ldrb	r1, [r2]
+ 157 0066 1C4A     		ldr	r2, .L6+4
+ 158 0068 4900     		lsl	r1, r1, #1
+ 159 006a 895A     		ldrh	r1, [r1, r2]
+ 160 006c 7A68     		ldr	r2, [r7, #4]
+ 161 006e 0433     		add	r3, r3, #4
+ 162 0070 5B00     		lsl	r3, r3, #1
+ 163 0072 FF20     		mov	r0, #255
+ 164 0074 0C1C     		mov	r4, r1
+ 165 0076 0440     		and	r4, r0
+ 166 0078 D018     		add	r0, r2, r3
+ 167 007a C678     		ldrb	r6, [r0, #3]
+ 168 007c 0025     		mov	r5, #0
+ 169 007e 3540     		and	r5, r6
+ 170 0080 2C43     		orr	r4, r5
+ 171 0082 C470     		strb	r4, [r0, #3]
+ 172 0084 090A     		lsr	r1, r1, #8
+ 173 0086 88B2     		uxth	r0, r1
+ 174 0088 D318     		add	r3, r2, r3
+ 175 008a 1979     		ldrb	r1, [r3, #4]
+ 176 008c 0022     		mov	r2, #0
+ 177 008e 0A40     		and	r2, r1
+ 178 0090 111C     		add	r1, r2, #0
+ 179 0092 021C     		add	r2, r0, #0
+ 180 0094 0A43     		orr	r2, r1
+ 181 0096 1A71     		strb	r2, [r3, #4]
+ 214:.\Generated_Source\PSoC4/CapSense_MBX.c ****         #if (CapSense_SIGNAL_SIZE == CapSense_SIGNAL_SIZE_UINT8)
+ 215:.\Generated_Source\PSoC4/CapSense_MBX.c ****             mbx->outbox.signal[i]   = (uint8)CapSense_sensorSignal[i];
+ 182              		.loc 1 215 0 discriminator 2
+ 183 0098 3B1C     		mov	r3, r7
+ 184 009a 0F33     		add	r3, r3, #15
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccoMDPJi.s 			page 8
+
+
+ 185 009c 1B78     		ldrb	r3, [r3]
+ 186 009e 3A1C     		mov	r2, r7
+ 187 00a0 0F32     		add	r2, r2, #15
+ 188 00a2 1278     		ldrb	r2, [r2]
+ 189 00a4 0D49     		ldr	r1, .L6+8
+ 190 00a6 8A5C     		ldrb	r2, [r1, r2]
+ 191 00a8 7968     		ldr	r1, [r7, #4]
+ 192 00aa CB18     		add	r3, r1, r3
+ 193 00ac DA74     		strb	r2, [r3, #19]
+ 210:.\Generated_Source\PSoC4/CapSense_MBX.c ****     for(i=0u; i < CapSense_TOTAL_SENSOR_COUNT; i++)
+ 194              		.loc 1 210 0 discriminator 2
+ 195 00ae 3B1C     		mov	r3, r7
+ 196 00b0 0F33     		add	r3, r3, #15
+ 197 00b2 3A1C     		mov	r2, r7
+ 198 00b4 0F32     		add	r2, r2, #15
+ 199 00b6 1278     		ldrb	r2, [r2]
+ 200 00b8 0132     		add	r2, r2, #1
+ 201 00ba 1A70     		strb	r2, [r3]
+ 202              	.L4:
+ 210:.\Generated_Source\PSoC4/CapSense_MBX.c ****     for(i=0u; i < CapSense_TOTAL_SENSOR_COUNT; i++)
+ 203              		.loc 1 210 0 is_stmt 0 discriminator 1
+ 204 00bc 3B1C     		mov	r3, r7
+ 205 00be 0F33     		add	r3, r3, #15
+ 206 00c0 1B78     		ldrb	r3, [r3]
+ 207 00c2 032B     		cmp	r3, #3
+ 208 00c4 ABD9     		bls	.L5
+ 216:.\Generated_Source\PSoC4/CapSense_MBX.c ****         #else
+ 217:.\Generated_Source\PSoC4/CapSense_MBX.c ****             mbx->outbox.signal[i]   = (uint16)CapSense_sensorSignal[i];
+ 218:.\Generated_Source\PSoC4/CapSense_MBX.c ****         #endif  /* (CapSense_SIGNAL_SIZE == CapSense_SIGNAL_SIZE_UINT8) */
+ 219:.\Generated_Source\PSoC4/CapSense_MBX.c ****     }
+ 220:.\Generated_Source\PSoC4/CapSense_MBX.c ****         
+ 221:.\Generated_Source\PSoC4/CapSense_MBX.c ****     /* AutoTuning - need to copy all High Level parameters */
+ 222:.\Generated_Source\PSoC4/CapSense_MBX.c ****     #if (CapSense_TUNING_METHOD == CapSense__TUNING_AUTO)
+ 223:.\Generated_Source\PSoC4/CapSense_MBX.c ****         
+ 224:.\Generated_Source\PSoC4/CapSense_MBX.c ****         /* Parameters are changed in run time */
+ 225:.\Generated_Source\PSoC4/CapSense_MBX.c ****         for(i=0u; i < CapSense_WIDGET_CSHL_PARAMETERS_COUNT; i++)
+ 226:.\Generated_Source\PSoC4/CapSense_MBX.c ****         {
+ 227:.\Generated_Source\PSoC4/CapSense_MBX.c ****             mbx->outbox.fingerThreshold[i] = CapSense_fingerThreshold[i];
+ 228:.\Generated_Source\PSoC4/CapSense_MBX.c ****             mbx->outbox.noiseThreshold[i]  = CapSense_noiseThreshold[i];
+ 229:.\Generated_Source\PSoC4/CapSense_MBX.c ****         }
+ 230:.\Generated_Source\PSoC4/CapSense_MBX.c ****         
+ 231:.\Generated_Source\PSoC4/CapSense_MBX.c ****         /* Widget resolution, take to account TP and MB */
+ 232:.\Generated_Source\PSoC4/CapSense_MBX.c ****         for(i=0u; i < CapSense_WIDGET_RESOLUTION_PARAMETERS_COUNT; i++)
+ 233:.\Generated_Source\PSoC4/CapSense_MBX.c ****         {
+ 234:.\Generated_Source\PSoC4/CapSense_MBX.c ****             mbx->outbox.scanResolution[i]  = (uint8)(CapSense_widgetResolution[i] >> CapSense_MSB_R
+ 235:.\Generated_Source\PSoC4/CapSense_MBX.c ****         }
+ 236:.\Generated_Source\PSoC4/CapSense_MBX.c **** 
+ 237:.\Generated_Source\PSoC4/CapSense_MBX.c ****         /* Copy tuned idac values */
+ 238:.\Generated_Source\PSoC4/CapSense_MBX.c ****         for(i=0u; i < CapSense_TOTAL_SENSOR_COUNT; i++)
+ 239:.\Generated_Source\PSoC4/CapSense_MBX.c ****         {
+ 240:.\Generated_Source\PSoC4/CapSense_MBX.c ****             mbx->outbox.idac1Value[i] = CapSense_modulationIDAC[i];
+ 241:.\Generated_Source\PSoC4/CapSense_MBX.c **** 			#if (CapSense_IDAC_CNT == 2u)
+ 242:.\Generated_Source\PSoC4/CapSense_MBX.c ****             	mbx->outbox.idac2Value[i] = CapSense_compensationIDAC[i];
+ 243:.\Generated_Source\PSoC4/CapSense_MBX.c **** 			#endif /* (CapSense_IDAC_CNT == 2u) */	
+ 244:.\Generated_Source\PSoC4/CapSense_MBX.c ****         }
+ 245:.\Generated_Source\PSoC4/CapSense_MBX.c ****             
+ 246:.\Generated_Source\PSoC4/CapSense_MBX.c ****         /* Pass parameters only once */
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccoMDPJi.s 			page 9
+
+
+ 247:.\Generated_Source\PSoC4/CapSense_MBX.c ****         CapSense_lowLevelTuningDone = 0u;
+ 248:.\Generated_Source\PSoC4/CapSense_MBX.c ****     #endif  /* (CapSense_TUNING_METHOD == CapSense__TUNING_MANUAL) */
+ 249:.\Generated_Source\PSoC4/CapSense_MBX.c **** 
+ 250:.\Generated_Source\PSoC4/CapSense_MBX.c ****     /* Copy scan parameters */
+ 251:.\Generated_Source\PSoC4/CapSense_MBX.c ****     #if ( CapSense_TUNING_METHOD == CapSense__TUNING_AUTO )
+ 252:.\Generated_Source\PSoC4/CapSense_MBX.c ****         for(i=0u; i < CapSense_TOTAL_SCANSLOT_COUNT; i++)
+ 253:.\Generated_Source\PSoC4/CapSense_MBX.c ****         {
+ 254:.\Generated_Source\PSoC4/CapSense_MBX.c ****             mbx->outbox.analogSwitchDivider[i] = CapSense_senseClkDividerVal[i];
+ 255:.\Generated_Source\PSoC4/CapSense_MBX.c ****             mbx->outbox.modulatorDivider[i] = CapSense_sampleClkDividerVal;
+ 256:.\Generated_Source\PSoC4/CapSense_MBX.c ****         }
+ 257:.\Generated_Source\PSoC4/CapSense_MBX.c ****     #endif /* (CapSense_TUNING_METHOD == CapSense__TUNING_AUTO) */
+ 258:.\Generated_Source\PSoC4/CapSense_MBX.c **** 
+ 259:.\Generated_Source\PSoC4/CapSense_MBX.c ****     /* Set busy flag */
+ 260:.\Generated_Source\PSoC4/CapSense_MBX.c ****     mbx->type = CapSense_BUSY_FLAG;
+ 209              		.loc 1 260 0 is_stmt 1
+ 210 00c6 7B68     		ldr	r3, [r7, #4]
+ 211 00c8 8422     		mov	r2, #132
+ 212 00ca 1A70     		strb	r2, [r3]
+ 261:.\Generated_Source\PSoC4/CapSense_MBX.c **** }
+ 213              		.loc 1 261 0
+ 214 00cc BD46     		mov	sp, r7
+ 215 00ce 05B0     		add	sp, sp, #20
+ 216              		@ sp needed for prologue
+ 217 00d0 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 218              	.L7:
+ 219 00d2 C046     		.align	2
+ 220              	.L6:
+ 221 00d4 00000000 		.word	CapSense_sensorRaw
+ 222 00d8 00000000 		.word	CapSense_sensorBaseline
+ 223 00dc 00000000 		.word	CapSense_sensorSignal
+ 224              		.cfi_endproc
+ 225              	.LFE34:
+ 226              		.size	CapSense_PostMessage, .-CapSense_PostMessage
+ 227              		.text
+ 228              	.Letext0:
+ 229              		.file 2 ".\\Generated_Source\\PSoC4\\cytypes.h"
+ 230              		.file 3 ".\\Generated_Source\\PSoC4\\CapSense_MBX.h"
+ 231              		.file 4 ".\\Generated_Source\\PSoC4\\CapSense.h"
+ 232              		.section	.debug_info,"",%progbits
+ 233              	.Ldebug_info0:
+ 234 0000 F7010000 		.4byte	0x1f7
+ 235 0004 0200     		.2byte	0x2
+ 236 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 237 000a 04       		.byte	0x4
+ 238 000b 01       		.uleb128 0x1
+ 239 000c D8010000 		.4byte	.LASF30
+ 240 0010 01       		.byte	0x1
+ 241 0011 2D000000 		.4byte	.LASF31
+ 242 0015 AA000000 		.4byte	.LASF32
+ 243 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 244 001d 00000000 		.4byte	0
+ 245 0021 00000000 		.4byte	0
+ 246 0025 00000000 		.4byte	.Ldebug_line0
+ 247 0029 02       		.uleb128 0x2
+ 248 002a 01       		.byte	0x1
+ 249 002b 06       		.byte	0x6
+ 250 002c C3010000 		.4byte	.LASF0
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccoMDPJi.s 			page 10
+
+
+ 251 0030 02       		.uleb128 0x2
+ 252 0031 01       		.byte	0x1
+ 253 0032 08       		.byte	0x8
+ 254 0033 E9000000 		.4byte	.LASF1
+ 255 0037 02       		.uleb128 0x2
+ 256 0038 02       		.byte	0x2
+ 257 0039 05       		.byte	0x5
+ 258 003a 14010000 		.4byte	.LASF2
+ 259 003e 02       		.uleb128 0x2
+ 260 003f 02       		.byte	0x2
+ 261 0040 07       		.byte	0x7
+ 262 0041 1A000000 		.4byte	.LASF3
+ 263 0045 02       		.uleb128 0x2
+ 264 0046 04       		.byte	0x4
+ 265 0047 05       		.byte	0x5
+ 266 0048 A5010000 		.4byte	.LASF4
+ 267 004c 02       		.uleb128 0x2
+ 268 004d 04       		.byte	0x4
+ 269 004e 07       		.byte	0x7
+ 270 004f 92000000 		.4byte	.LASF5
+ 271 0053 02       		.uleb128 0x2
+ 272 0054 08       		.byte	0x8
+ 273 0055 05       		.byte	0x5
+ 274 0056 59010000 		.4byte	.LASF6
+ 275 005a 02       		.uleb128 0x2
+ 276 005b 08       		.byte	0x8
+ 277 005c 07       		.byte	0x7
+ 278 005d 39010000 		.4byte	.LASF7
+ 279 0061 03       		.uleb128 0x3
+ 280 0062 04       		.byte	0x4
+ 281 0063 05       		.byte	0x5
+ 282 0064 696E7400 		.ascii	"int\000"
+ 283 0068 02       		.uleb128 0x2
+ 284 0069 04       		.byte	0x4
+ 285 006a 07       		.byte	0x7
+ 286 006b 2C010000 		.4byte	.LASF8
+ 287 006f 04       		.uleb128 0x4
+ 288 0070 A4000000 		.4byte	.LASF9
+ 289 0074 02       		.byte	0x2
+ 290 0075 5B       		.byte	0x5b
+ 291 0076 30000000 		.4byte	0x30
+ 292 007a 04       		.uleb128 0x4
+ 293 007b 25010000 		.4byte	.LASF10
+ 294 007f 02       		.byte	0x2
+ 295 0080 5C       		.byte	0x5c
+ 296 0081 3E000000 		.4byte	0x3e
+ 297 0085 02       		.uleb128 0x2
+ 298 0086 04       		.byte	0x4
+ 299 0087 04       		.byte	0x4
+ 300 0088 6F000000 		.4byte	.LASF11
+ 301 008c 02       		.uleb128 0x2
+ 302 008d 08       		.byte	0x8
+ 303 008e 04       		.byte	0x4
+ 304 008f F7000000 		.4byte	.LASF12
+ 305 0093 02       		.uleb128 0x2
+ 306 0094 01       		.byte	0x1
+ 307 0095 08       		.byte	0x8
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccoMDPJi.s 			page 11
+
+
+ 308 0096 67010000 		.4byte	.LASF13
+ 309 009a 02       		.uleb128 0x2
+ 310 009b 04       		.byte	0x4
+ 311 009c 07       		.byte	0x7
+ 312 009d 50010000 		.4byte	.LASF14
+ 313 00a1 05       		.uleb128 0x5
+ 314 00a2 17       		.byte	0x17
+ 315 00a3 03       		.byte	0x3
+ 316 00a4 42       		.byte	0x42
+ 317 00a5 F0000000 		.4byte	0xf0
+ 318 00a9 06       		.uleb128 0x6
+ 319 00aa 9D010000 		.4byte	.LASF15
+ 320 00ae 03       		.byte	0x3
+ 321 00af 4C       		.byte	0x4c
+ 322 00b0 F0000000 		.4byte	0xf0
+ 323 00b4 02       		.byte	0x2
+ 324 00b5 23       		.byte	0x23
+ 325 00b6 00       		.uleb128 0
+ 326 00b7 06       		.uleb128 0x6
+ 327 00b8 CF010000 		.4byte	.LASF16
+ 328 00bc 03       		.byte	0x3
+ 329 00bd 4D       		.byte	0x4d
+ 330 00be F0000000 		.4byte	0xf0
+ 331 00c2 02       		.byte	0x2
+ 332 00c3 23       		.byte	0x23
+ 333 00c4 08       		.uleb128 0x8
+ 334 00c5 06       		.uleb128 0x6
+ 335 00c6 00000000 		.4byte	.LASF17
+ 336 00ca 03       		.byte	0x3
+ 337 00cb 4F       		.byte	0x4f
+ 338 00cc 00010000 		.4byte	0x100
+ 339 00d0 02       		.byte	0x2
+ 340 00d1 23       		.byte	0x23
+ 341 00d2 10       		.uleb128 0x10
+ 342 00d3 06       		.uleb128 0x6
+ 343 00d4 1E010000 		.4byte	.LASF18
+ 344 00d8 03       		.byte	0x3
+ 345 00d9 51       		.byte	0x51
+ 346 00da 10010000 		.4byte	0x110
+ 347 00de 02       		.byte	0x2
+ 348 00df 23       		.byte	0x23
+ 349 00e0 14       		.uleb128 0x14
+ 350 00e1 06       		.uleb128 0x6
+ 351 00e2 66000000 		.4byte	.LASF19
+ 352 00e6 03       		.byte	0x3
+ 353 00e7 61       		.byte	0x61
+ 354 00e8 7A000000 		.4byte	0x7a
+ 355 00ec 02       		.byte	0x2
+ 356 00ed 23       		.byte	0x23
+ 357 00ee 15       		.uleb128 0x15
+ 358 00ef 00       		.byte	0
+ 359 00f0 07       		.uleb128 0x7
+ 360 00f1 7A000000 		.4byte	0x7a
+ 361 00f5 00010000 		.4byte	0x100
+ 362 00f9 08       		.uleb128 0x8
+ 363 00fa 9A000000 		.4byte	0x9a
+ 364 00fe 03       		.byte	0x3
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccoMDPJi.s 			page 12
+
+
+ 365 00ff 00       		.byte	0
+ 366 0100 07       		.uleb128 0x7
+ 367 0101 6F000000 		.4byte	0x6f
+ 368 0105 10010000 		.4byte	0x110
+ 369 0109 08       		.uleb128 0x8
+ 370 010a 9A000000 		.4byte	0x9a
+ 371 010e 03       		.byte	0x3
+ 372 010f 00       		.byte	0
+ 373 0110 07       		.uleb128 0x7
+ 374 0111 6F000000 		.4byte	0x6f
+ 375 0115 20010000 		.4byte	0x120
+ 376 0119 08       		.uleb128 0x8
+ 377 011a 9A000000 		.4byte	0x9a
+ 378 011e 00       		.byte	0
+ 379 011f 00       		.byte	0
+ 380 0120 04       		.uleb128 0x4
+ 381 0121 6C010000 		.4byte	.LASF20
+ 382 0125 03       		.byte	0x3
+ 383 0126 62       		.byte	0x62
+ 384 0127 A1000000 		.4byte	0xa1
+ 385 012b 05       		.uleb128 0x5
+ 386 012c 1A       		.byte	0x1a
+ 387 012d 03       		.byte	0x3
+ 388 012e 7A       		.byte	0x7a
+ 389 012f 5E010000 		.4byte	0x15e
+ 390 0133 06       		.uleb128 0x6
+ 391 0134 7C010000 		.4byte	.LASF21
+ 392 0138 03       		.byte	0x3
+ 393 0139 7C       		.byte	0x7c
+ 394 013a 6F000000 		.4byte	0x6f
+ 395 013e 02       		.byte	0x2
+ 396 013f 23       		.byte	0x23
+ 397 0140 00       		.uleb128 0
+ 398 0141 06       		.uleb128 0x6
+ 399 0142 75000000 		.4byte	.LASF22
+ 400 0146 03       		.byte	0x3
+ 401 0147 7D       		.byte	0x7d
+ 402 0148 7A000000 		.4byte	0x7a
+ 403 014c 02       		.byte	0x2
+ 404 014d 23       		.byte	0x23
+ 405 014e 01       		.uleb128 0x1
+ 406 014f 06       		.uleb128 0x6
+ 407 0150 96010000 		.4byte	.LASF23
+ 408 0154 03       		.byte	0x3
+ 409 0155 7E       		.byte	0x7e
+ 410 0156 20010000 		.4byte	0x120
+ 411 015a 02       		.byte	0x2
+ 412 015b 23       		.byte	0x23
+ 413 015c 03       		.uleb128 0x3
+ 414 015d 00       		.byte	0
+ 415 015e 04       		.uleb128 0x4
+ 416 015f 55000000 		.4byte	.LASF24
+ 417 0163 03       		.byte	0x3
+ 418 0164 83       		.byte	0x83
+ 419 0165 2B010000 		.4byte	0x12b
+ 420 0169 09       		.uleb128 0x9
+ 421 016a 01       		.byte	0x1
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccoMDPJi.s 			page 13
+
+
+ 422 016b 81010000 		.4byte	.LASF25
+ 423 016f 01       		.byte	0x1
+ 424 0170 8F       		.byte	0x8f
+ 425 0171 01       		.byte	0x1
+ 426 0172 00000000 		.4byte	.LFB33
+ 427 0176 44000000 		.4byte	.LFE33
+ 428 017a 00000000 		.4byte	.LLST0
+ 429 017e 01       		.byte	0x1
+ 430 017f 92010000 		.4byte	0x192
+ 431 0183 0A       		.uleb128 0xa
+ 432 0184 6D627800 		.ascii	"mbx\000"
+ 433 0188 01       		.byte	0x1
+ 434 0189 8F       		.byte	0x8f
+ 435 018a 92010000 		.4byte	0x192
+ 436 018e 02       		.byte	0x2
+ 437 018f 91       		.byte	0x91
+ 438 0190 74       		.sleb128 -12
+ 439 0191 00       		.byte	0
+ 440 0192 0B       		.uleb128 0xb
+ 441 0193 04       		.byte	0x4
+ 442 0194 98010000 		.4byte	0x198
+ 443 0198 0C       		.uleb128 0xc
+ 444 0199 5E010000 		.4byte	0x15e
+ 445 019d 09       		.uleb128 0x9
+ 446 019e 01       		.byte	0x1
+ 447 019f AE010000 		.4byte	.LASF26
+ 448 01a3 01       		.byte	0x1
+ 449 01a4 CA       		.byte	0xca
+ 450 01a5 01       		.byte	0x1
+ 451 01a6 00000000 		.4byte	.LFB34
+ 452 01aa E0000000 		.4byte	.LFE34
+ 453 01ae 38000000 		.4byte	.LLST1
+ 454 01b2 01       		.byte	0x1
+ 455 01b3 D2010000 		.4byte	0x1d2
+ 456 01b7 0A       		.uleb128 0xa
+ 457 01b8 6D627800 		.ascii	"mbx\000"
+ 458 01bc 01       		.byte	0x1
+ 459 01bd CA       		.byte	0xca
+ 460 01be 92010000 		.4byte	0x192
+ 461 01c2 02       		.byte	0x2
+ 462 01c3 91       		.byte	0x91
+ 463 01c4 5C       		.sleb128 -36
+ 464 01c5 0D       		.uleb128 0xd
+ 465 01c6 6900     		.ascii	"i\000"
+ 466 01c8 01       		.byte	0x1
+ 467 01c9 CC       		.byte	0xcc
+ 468 01ca 6F000000 		.4byte	0x6f
+ 469 01ce 02       		.byte	0x2
+ 470 01cf 91       		.byte	0x91
+ 471 01d0 67       		.sleb128 -25
+ 472 01d1 00       		.byte	0
+ 473 01d2 0E       		.uleb128 0xe
+ 474 01d3 07000000 		.4byte	.LASF27
+ 475 01d7 04       		.byte	0x4
+ 476 01d8 EA02     		.2byte	0x2ea
+ 477 01da F0000000 		.4byte	0xf0
+ 478 01de 01       		.byte	0x1
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccoMDPJi.s 			page 14
+
+
+ 479 01df 01       		.byte	0x1
+ 480 01e0 0F       		.uleb128 0xf
+ 481 01e1 7A000000 		.4byte	.LASF28
+ 482 01e5 01       		.byte	0x1
+ 483 01e6 15       		.byte	0x15
+ 484 01e7 F0000000 		.4byte	0xf0
+ 485 01eb 01       		.byte	0x1
+ 486 01ec 01       		.byte	0x1
+ 487 01ed 0F       		.uleb128 0xf
+ 488 01ee FE000000 		.4byte	.LASF29
+ 489 01f2 01       		.byte	0x1
+ 490 01f3 16       		.byte	0x16
+ 491 01f4 00010000 		.4byte	0x100
+ 492 01f8 01       		.byte	0x1
+ 493 01f9 01       		.byte	0x1
+ 494 01fa 00       		.byte	0
+ 495              		.section	.debug_abbrev,"",%progbits
+ 496              	.Ldebug_abbrev0:
+ 497 0000 01       		.uleb128 0x1
+ 498 0001 11       		.uleb128 0x11
+ 499 0002 01       		.byte	0x1
+ 500 0003 25       		.uleb128 0x25
+ 501 0004 0E       		.uleb128 0xe
+ 502 0005 13       		.uleb128 0x13
+ 503 0006 0B       		.uleb128 0xb
+ 504 0007 03       		.uleb128 0x3
+ 505 0008 0E       		.uleb128 0xe
+ 506 0009 1B       		.uleb128 0x1b
+ 507 000a 0E       		.uleb128 0xe
+ 508 000b 55       		.uleb128 0x55
+ 509 000c 06       		.uleb128 0x6
+ 510 000d 11       		.uleb128 0x11
+ 511 000e 01       		.uleb128 0x1
+ 512 000f 52       		.uleb128 0x52
+ 513 0010 01       		.uleb128 0x1
+ 514 0011 10       		.uleb128 0x10
+ 515 0012 06       		.uleb128 0x6
+ 516 0013 00       		.byte	0
+ 517 0014 00       		.byte	0
+ 518 0015 02       		.uleb128 0x2
+ 519 0016 24       		.uleb128 0x24
+ 520 0017 00       		.byte	0
+ 521 0018 0B       		.uleb128 0xb
+ 522 0019 0B       		.uleb128 0xb
+ 523 001a 3E       		.uleb128 0x3e
+ 524 001b 0B       		.uleb128 0xb
+ 525 001c 03       		.uleb128 0x3
+ 526 001d 0E       		.uleb128 0xe
+ 527 001e 00       		.byte	0
+ 528 001f 00       		.byte	0
+ 529 0020 03       		.uleb128 0x3
+ 530 0021 24       		.uleb128 0x24
+ 531 0022 00       		.byte	0
+ 532 0023 0B       		.uleb128 0xb
+ 533 0024 0B       		.uleb128 0xb
+ 534 0025 3E       		.uleb128 0x3e
+ 535 0026 0B       		.uleb128 0xb
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccoMDPJi.s 			page 15
+
+
+ 536 0027 03       		.uleb128 0x3
+ 537 0028 08       		.uleb128 0x8
+ 538 0029 00       		.byte	0
+ 539 002a 00       		.byte	0
+ 540 002b 04       		.uleb128 0x4
+ 541 002c 16       		.uleb128 0x16
+ 542 002d 00       		.byte	0
+ 543 002e 03       		.uleb128 0x3
+ 544 002f 0E       		.uleb128 0xe
+ 545 0030 3A       		.uleb128 0x3a
+ 546 0031 0B       		.uleb128 0xb
+ 547 0032 3B       		.uleb128 0x3b
+ 548 0033 0B       		.uleb128 0xb
+ 549 0034 49       		.uleb128 0x49
+ 550 0035 13       		.uleb128 0x13
+ 551 0036 00       		.byte	0
+ 552 0037 00       		.byte	0
+ 553 0038 05       		.uleb128 0x5
+ 554 0039 13       		.uleb128 0x13
+ 555 003a 01       		.byte	0x1
+ 556 003b 0B       		.uleb128 0xb
+ 557 003c 0B       		.uleb128 0xb
+ 558 003d 3A       		.uleb128 0x3a
+ 559 003e 0B       		.uleb128 0xb
+ 560 003f 3B       		.uleb128 0x3b
+ 561 0040 0B       		.uleb128 0xb
+ 562 0041 01       		.uleb128 0x1
+ 563 0042 13       		.uleb128 0x13
+ 564 0043 00       		.byte	0
+ 565 0044 00       		.byte	0
+ 566 0045 06       		.uleb128 0x6
+ 567 0046 0D       		.uleb128 0xd
+ 568 0047 00       		.byte	0
+ 569 0048 03       		.uleb128 0x3
+ 570 0049 0E       		.uleb128 0xe
+ 571 004a 3A       		.uleb128 0x3a
+ 572 004b 0B       		.uleb128 0xb
+ 573 004c 3B       		.uleb128 0x3b
+ 574 004d 0B       		.uleb128 0xb
+ 575 004e 49       		.uleb128 0x49
+ 576 004f 13       		.uleb128 0x13
+ 577 0050 38       		.uleb128 0x38
+ 578 0051 0A       		.uleb128 0xa
+ 579 0052 00       		.byte	0
+ 580 0053 00       		.byte	0
+ 581 0054 07       		.uleb128 0x7
+ 582 0055 01       		.uleb128 0x1
+ 583 0056 01       		.byte	0x1
+ 584 0057 49       		.uleb128 0x49
+ 585 0058 13       		.uleb128 0x13
+ 586 0059 01       		.uleb128 0x1
+ 587 005a 13       		.uleb128 0x13
+ 588 005b 00       		.byte	0
+ 589 005c 00       		.byte	0
+ 590 005d 08       		.uleb128 0x8
+ 591 005e 21       		.uleb128 0x21
+ 592 005f 00       		.byte	0
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccoMDPJi.s 			page 16
+
+
+ 593 0060 49       		.uleb128 0x49
+ 594 0061 13       		.uleb128 0x13
+ 595 0062 2F       		.uleb128 0x2f
+ 596 0063 0B       		.uleb128 0xb
+ 597 0064 00       		.byte	0
+ 598 0065 00       		.byte	0
+ 599 0066 09       		.uleb128 0x9
+ 600 0067 2E       		.uleb128 0x2e
+ 601 0068 01       		.byte	0x1
+ 602 0069 3F       		.uleb128 0x3f
+ 603 006a 0C       		.uleb128 0xc
+ 604 006b 03       		.uleb128 0x3
+ 605 006c 0E       		.uleb128 0xe
+ 606 006d 3A       		.uleb128 0x3a
+ 607 006e 0B       		.uleb128 0xb
+ 608 006f 3B       		.uleb128 0x3b
+ 609 0070 0B       		.uleb128 0xb
+ 610 0071 27       		.uleb128 0x27
+ 611 0072 0C       		.uleb128 0xc
+ 612 0073 11       		.uleb128 0x11
+ 613 0074 01       		.uleb128 0x1
+ 614 0075 12       		.uleb128 0x12
+ 615 0076 01       		.uleb128 0x1
+ 616 0077 40       		.uleb128 0x40
+ 617 0078 06       		.uleb128 0x6
+ 618 0079 9742     		.uleb128 0x2117
+ 619 007b 0C       		.uleb128 0xc
+ 620 007c 01       		.uleb128 0x1
+ 621 007d 13       		.uleb128 0x13
+ 622 007e 00       		.byte	0
+ 623 007f 00       		.byte	0
+ 624 0080 0A       		.uleb128 0xa
+ 625 0081 05       		.uleb128 0x5
+ 626 0082 00       		.byte	0
+ 627 0083 03       		.uleb128 0x3
+ 628 0084 08       		.uleb128 0x8
+ 629 0085 3A       		.uleb128 0x3a
+ 630 0086 0B       		.uleb128 0xb
+ 631 0087 3B       		.uleb128 0x3b
+ 632 0088 0B       		.uleb128 0xb
+ 633 0089 49       		.uleb128 0x49
+ 634 008a 13       		.uleb128 0x13
+ 635 008b 02       		.uleb128 0x2
+ 636 008c 0A       		.uleb128 0xa
+ 637 008d 00       		.byte	0
+ 638 008e 00       		.byte	0
+ 639 008f 0B       		.uleb128 0xb
+ 640 0090 0F       		.uleb128 0xf
+ 641 0091 00       		.byte	0
+ 642 0092 0B       		.uleb128 0xb
+ 643 0093 0B       		.uleb128 0xb
+ 644 0094 49       		.uleb128 0x49
+ 645 0095 13       		.uleb128 0x13
+ 646 0096 00       		.byte	0
+ 647 0097 00       		.byte	0
+ 648 0098 0C       		.uleb128 0xc
+ 649 0099 35       		.uleb128 0x35
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccoMDPJi.s 			page 17
+
+
+ 650 009a 00       		.byte	0
+ 651 009b 49       		.uleb128 0x49
+ 652 009c 13       		.uleb128 0x13
+ 653 009d 00       		.byte	0
+ 654 009e 00       		.byte	0
+ 655 009f 0D       		.uleb128 0xd
+ 656 00a0 34       		.uleb128 0x34
+ 657 00a1 00       		.byte	0
+ 658 00a2 03       		.uleb128 0x3
+ 659 00a3 08       		.uleb128 0x8
+ 660 00a4 3A       		.uleb128 0x3a
+ 661 00a5 0B       		.uleb128 0xb
+ 662 00a6 3B       		.uleb128 0x3b
+ 663 00a7 0B       		.uleb128 0xb
+ 664 00a8 49       		.uleb128 0x49
+ 665 00a9 13       		.uleb128 0x13
+ 666 00aa 02       		.uleb128 0x2
+ 667 00ab 0A       		.uleb128 0xa
+ 668 00ac 00       		.byte	0
+ 669 00ad 00       		.byte	0
+ 670 00ae 0E       		.uleb128 0xe
+ 671 00af 34       		.uleb128 0x34
+ 672 00b0 00       		.byte	0
+ 673 00b1 03       		.uleb128 0x3
+ 674 00b2 0E       		.uleb128 0xe
+ 675 00b3 3A       		.uleb128 0x3a
+ 676 00b4 0B       		.uleb128 0xb
+ 677 00b5 3B       		.uleb128 0x3b
+ 678 00b6 05       		.uleb128 0x5
+ 679 00b7 49       		.uleb128 0x49
+ 680 00b8 13       		.uleb128 0x13
+ 681 00b9 3F       		.uleb128 0x3f
+ 682 00ba 0C       		.uleb128 0xc
+ 683 00bb 3C       		.uleb128 0x3c
+ 684 00bc 0C       		.uleb128 0xc
+ 685 00bd 00       		.byte	0
+ 686 00be 00       		.byte	0
+ 687 00bf 0F       		.uleb128 0xf
+ 688 00c0 34       		.uleb128 0x34
+ 689 00c1 00       		.byte	0
+ 690 00c2 03       		.uleb128 0x3
+ 691 00c3 0E       		.uleb128 0xe
+ 692 00c4 3A       		.uleb128 0x3a
+ 693 00c5 0B       		.uleb128 0xb
+ 694 00c6 3B       		.uleb128 0x3b
+ 695 00c7 0B       		.uleb128 0xb
+ 696 00c8 49       		.uleb128 0x49
+ 697 00c9 13       		.uleb128 0x13
+ 698 00ca 3F       		.uleb128 0x3f
+ 699 00cb 0C       		.uleb128 0xc
+ 700 00cc 3C       		.uleb128 0x3c
+ 701 00cd 0C       		.uleb128 0xc
+ 702 00ce 00       		.byte	0
+ 703 00cf 00       		.byte	0
+ 704 00d0 00       		.byte	0
+ 705              		.section	.debug_loc,"",%progbits
+ 706              	.Ldebug_loc0:
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccoMDPJi.s 			page 18
+
+
+ 707              	.LLST0:
+ 708 0000 00000000 		.4byte	.LFB33
+ 709 0004 02000000 		.4byte	.LCFI0
+ 710 0008 0200     		.2byte	0x2
+ 711 000a 7D       		.byte	0x7d
+ 712 000b 00       		.sleb128 0
+ 713 000c 02000000 		.4byte	.LCFI0
+ 714 0010 04000000 		.4byte	.LCFI1
+ 715 0014 0200     		.2byte	0x2
+ 716 0016 7D       		.byte	0x7d
+ 717 0017 08       		.sleb128 8
+ 718 0018 04000000 		.4byte	.LCFI1
+ 719 001c 06000000 		.4byte	.LCFI2
+ 720 0020 0200     		.2byte	0x2
+ 721 0022 7D       		.byte	0x7d
+ 722 0023 10       		.sleb128 16
+ 723 0024 06000000 		.4byte	.LCFI2
+ 724 0028 44000000 		.4byte	.LFE33
+ 725 002c 0200     		.2byte	0x2
+ 726 002e 77       		.byte	0x77
+ 727 002f 10       		.sleb128 16
+ 728 0030 00000000 		.4byte	0
+ 729 0034 00000000 		.4byte	0
+ 730              	.LLST1:
+ 731 0038 00000000 		.4byte	.LFB34
+ 732 003c 02000000 		.4byte	.LCFI3
+ 733 0040 0200     		.2byte	0x2
+ 734 0042 7D       		.byte	0x7d
+ 735 0043 00       		.sleb128 0
+ 736 0044 02000000 		.4byte	.LCFI3
+ 737 0048 04000000 		.4byte	.LCFI4
+ 738 004c 0200     		.2byte	0x2
+ 739 004e 7D       		.byte	0x7d
+ 740 004f 14       		.sleb128 20
+ 741 0050 04000000 		.4byte	.LCFI4
+ 742 0054 06000000 		.4byte	.LCFI5
+ 743 0058 0200     		.2byte	0x2
+ 744 005a 7D       		.byte	0x7d
+ 745 005b 28       		.sleb128 40
+ 746 005c 06000000 		.4byte	.LCFI5
+ 747 0060 E0000000 		.4byte	.LFE34
+ 748 0064 0200     		.2byte	0x2
+ 749 0066 77       		.byte	0x77
+ 750 0067 28       		.sleb128 40
+ 751 0068 00000000 		.4byte	0
+ 752 006c 00000000 		.4byte	0
+ 753              		.section	.debug_aranges,"",%progbits
+ 754 0000 24000000 		.4byte	0x24
+ 755 0004 0200     		.2byte	0x2
+ 756 0006 00000000 		.4byte	.Ldebug_info0
+ 757 000a 04       		.byte	0x4
+ 758 000b 00       		.byte	0
+ 759 000c 0000     		.2byte	0
+ 760 000e 0000     		.2byte	0
+ 761 0010 00000000 		.4byte	.LFB33
+ 762 0014 44000000 		.4byte	.LFE33-.LFB33
+ 763 0018 00000000 		.4byte	.LFB34
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccoMDPJi.s 			page 19
+
+
+ 764 001c E0000000 		.4byte	.LFE34-.LFB34
+ 765 0020 00000000 		.4byte	0
+ 766 0024 00000000 		.4byte	0
+ 767              		.section	.debug_ranges,"",%progbits
+ 768              	.Ldebug_ranges0:
+ 769 0000 00000000 		.4byte	.LFB33
+ 770 0004 44000000 		.4byte	.LFE33
+ 771 0008 00000000 		.4byte	.LFB34
+ 772 000c E0000000 		.4byte	.LFE34
+ 773 0010 00000000 		.4byte	0
+ 774 0014 00000000 		.4byte	0
+ 775              		.section	.debug_line,"",%progbits
+ 776              	.Ldebug_line0:
+ 777 0000 BF000000 		.section	.debug_str,"MS",%progbits,1
+ 777      02006B00 
+ 777      00000201 
+ 777      FB0E0D00 
+ 777      01010101 
+ 778              	.LASF17:
+ 779 0000 7369676E 		.ascii	"signal\000"
+ 779      616C00
+ 780              	.LASF27:
+ 781 0007 43617053 		.ascii	"CapSense_sensorRaw\000"
+ 781      656E7365 
+ 781      5F73656E 
+ 781      736F7252 
+ 781      617700
+ 782              	.LASF3:
+ 783 001a 73686F72 		.ascii	"short unsigned int\000"
+ 783      7420756E 
+ 783      7369676E 
+ 783      65642069 
+ 783      6E7400
+ 784              	.LASF31:
+ 785 002d 2E5C4765 		.ascii	".\\Generated_Source\\PSoC4\\CapSense_MBX.c\000"
+ 785      6E657261 
+ 785      7465645F 
+ 785      536F7572 
+ 785      63655C50 
+ 786              	.LASF24:
+ 787 0055 43617053 		.ascii	"CapSense_MAILBOX\000"
+ 787      656E7365 
+ 787      5F4D4149 
+ 787      4C424F58 
+ 787      00
+ 788              	.LASF19:
+ 789 0066 63686563 		.ascii	"checkSum\000"
+ 789      6B53756D 
+ 789      00
+ 790              	.LASF11:
+ 791 006f 666C6F61 		.ascii	"float\000"
+ 791      7400
+ 792              	.LASF22:
+ 793 0075 73697A65 		.ascii	"size\000"
+ 793      00
+ 794              	.LASF28:
+ 795 007a 43617053 		.ascii	"CapSense_sensorBaseline\000"
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccoMDPJi.s 			page 20
+
+
+ 795      656E7365 
+ 795      5F73656E 
+ 795      736F7242 
+ 795      6173656C 
+ 796              	.LASF5:
+ 797 0092 6C6F6E67 		.ascii	"long unsigned int\000"
+ 797      20756E73 
+ 797      69676E65 
+ 797      6420696E 
+ 797      7400
+ 798              	.LASF9:
+ 799 00a4 75696E74 		.ascii	"uint8\000"
+ 799      3800
+ 800              	.LASF32:
+ 801 00aa 433A5C55 		.ascii	"C:\\Users\\Miriam\\Documents\\PSoC Creator\\USB-UAR"
+ 801      73657273 
+ 801      5C4D6972 
+ 801      69616D5C 
+ 801      446F6375 
+ 802 00d8 545C5553 		.ascii	"T\\USB-UART.cydsn\000"
+ 802      422D5541 
+ 802      52542E63 
+ 802      7964736E 
+ 802      00
+ 803              	.LASF1:
+ 804 00e9 756E7369 		.ascii	"unsigned char\000"
+ 804      676E6564 
+ 804      20636861 
+ 804      7200
+ 805              	.LASF12:
+ 806 00f7 646F7562 		.ascii	"double\000"
+ 806      6C6500
+ 807              	.LASF29:
+ 808 00fe 43617053 		.ascii	"CapSense_sensorSignal\000"
+ 808      656E7365 
+ 808      5F73656E 
+ 808      736F7253 
+ 808      69676E61 
+ 809              	.LASF2:
+ 810 0114 73686F72 		.ascii	"short int\000"
+ 810      7420696E 
+ 810      7400
+ 811              	.LASF18:
+ 812 011e 6F6E4D61 		.ascii	"onMask\000"
+ 812      736B00
+ 813              	.LASF10:
+ 814 0125 75696E74 		.ascii	"uint16\000"
+ 814      313600
+ 815              	.LASF8:
+ 816 012c 756E7369 		.ascii	"unsigned int\000"
+ 816      676E6564 
+ 816      20696E74 
+ 816      00
+ 817              	.LASF7:
+ 818 0139 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 818      206C6F6E 
+ 818      6720756E 
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccoMDPJi.s 			page 21
+
+
+ 818      7369676E 
+ 818      65642069 
+ 819              	.LASF14:
+ 820 0150 73697A65 		.ascii	"sizetype\000"
+ 820      74797065 
+ 820      00
+ 821              	.LASF6:
+ 822 0159 6C6F6E67 		.ascii	"long long int\000"
+ 822      206C6F6E 
+ 822      6720696E 
+ 822      7400
+ 823              	.LASF13:
+ 824 0167 63686172 		.ascii	"char\000"
+ 824      00
+ 825              	.LASF20:
+ 826 016c 43617053 		.ascii	"CapSense_OUTBOX\000"
+ 826      656E7365 
+ 826      5F4F5554 
+ 826      424F5800 
+ 827              	.LASF21:
+ 828 017c 74797065 		.ascii	"type\000"
+ 828      00
+ 829              	.LASF25:
+ 830 0181 43617053 		.ascii	"CapSense_InitMailbox\000"
+ 830      656E7365 
+ 830      5F496E69 
+ 830      744D6169 
+ 830      6C626F78 
+ 831              	.LASF23:
+ 832 0196 6F757462 		.ascii	"outbox\000"
+ 832      6F7800
+ 833              	.LASF15:
+ 834 019d 72617744 		.ascii	"rawData\000"
+ 834      61746100 
+ 835              	.LASF4:
+ 836 01a5 6C6F6E67 		.ascii	"long int\000"
+ 836      20696E74 
+ 836      00
+ 837              	.LASF26:
+ 838 01ae 43617053 		.ascii	"CapSense_PostMessage\000"
+ 838      656E7365 
+ 838      5F506F73 
+ 838      744D6573 
+ 838      73616765 
+ 839              	.LASF0:
+ 840 01c3 7369676E 		.ascii	"signed char\000"
+ 840      65642063 
+ 840      68617200 
+ 841              	.LASF16:
+ 842 01cf 62617365 		.ascii	"baseLine\000"
+ 842      4C696E65 
+ 842      00
+ 843              	.LASF30:
+ 844 01d8 474E5520 		.ascii	"GNU C 4.7.3 20130312 (release) [ARM/embedded-4_7-br"
+ 844      4320342E 
+ 844      372E3320 
+ 844      32303133 
+ARM GAS  C:\Users\Miriam\AppData\Local\Temp\ccoMDPJi.s 			page 22
+
+
+ 844      30333132 
+ 845 020b 616E6368 		.ascii	"anch revision 196615]\000"
+ 845      20726576 
+ 845      6973696F 
+ 845      6E203139 
+ 845      36363135 
+ 846              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.7.3 20130312 (release) [ARM/embedded-4_7-br
